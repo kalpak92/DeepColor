@@ -20,6 +20,8 @@ def main():
     val_dir = 'data/train/class'
 
     utils.train_test_split()
+    cuda = torch.cuda.is_available()
+    num_workers = 8 if cuda else 0
 
     train_data_transform_scale = transforms.Compose([
         transforms.Resize(256)
@@ -38,7 +40,9 @@ def main():
             [train_data, utils.ImageTransformation('data/train/', train_data_transform_augment)]
         )
 
-    train_data_loader = torch.utils.data.DataLoader(train_data, batch_size=32, shuffle=True)
+    train_loader_args = dict(shuffle=True, batch_size=256, num_workers=num_workers, pin_memory=True) if cuda \
+        else dict(shuffle=True, batch_size=32)
+    train_data_loader = torch.utils.data.DataLoader(train_data, **train_loader_args)
 
     print(len(train_data_loader))
     sample = next(iter(train_data_loader))
