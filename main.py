@@ -1,3 +1,6 @@
+import argparse
+
+import torch
 import torchvision.transforms as transforms
 import glob
 import matplotlib.pyplot as plt
@@ -30,7 +33,7 @@ def load_data():
     print("Length of validation Image List", len(validation_image_list))
 
 
-def build_dataset():
+def build_dataset(cuda=False, num_workers=0):
     # define pytorch transforms
     transform = transforms.Compose([
         transforms.Resize(256),
@@ -44,7 +47,9 @@ def build_dataset():
     augmented_dataset = ConcatDataset(train_datasets)
     print("Length of Augmented Dataset", len(augmented_dataset))
 
-    augmented_dataset_batch = DataLoader(dataset=augmented_dataset, batch_size=64, shuffle=True)
+    train_loader_args = dict(shuffle=True, batch_size=256, num_workers=num_workers, pin_memory=True) if cuda \
+        else dict(shuffle=True, batch_size=32)
+    augmented_dataset_batch = DataLoader(dataset=augmented_dataset, **train_loader_args)
     sample = next(iter(augmented_dataset_batch))
 
     l_channel, ab_channel = sample
@@ -53,5 +58,17 @@ def build_dataset():
 
 
 if __name__ == '__main__':
+    cuda = False
+    if torch.cuda.is_available():
+        cuda = True
+        device = 'cuda'
+    else:
+        device = 'cpu'
+
+    num_workers = 8 if cuda else 0
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--batch_size', type=int, default=256, help='Batch size')
+
     load_data()
-    build_dataset()
+    build_dataset(cuda, num_workers)
