@@ -14,8 +14,8 @@ def show_img(img):
     plt.figure(figsize=(18, 15))
     # unnormalize
     # img = img / 2 + 0.5
-    #np_img = img.numpy()
-    #np_img = np.clip(np_img, 0., 1.)
+    # np_img = img.numpy()
+    # np_img = np.clip(np_img, 0., 1.)
     plt.imshow(np.transpose(img, (1, 2, 0)))
     plt.show()
 
@@ -41,8 +41,7 @@ def build_dataset(cuda=False, num_workers=0):
         transforms.RandomResizedCrop(128)
     ])
 
-    train_datasets = []
-    train_datasets.append(buildDataset.AugmentImageDataset('data/train'))
+    train_datasets = [buildDataset.AugmentImageDataset('data/train')]
     for i in range(9):
         train_datasets.append(buildDataset.AugmentImageDataset('data/train', transform))
     augmented_dataset = ConcatDataset(train_datasets)
@@ -54,7 +53,7 @@ def build_dataset(cuda=False, num_workers=0):
     sample = next(iter(augmented_dataset_batch))
 
     l_channel, a_channel, b_channel = sample
-    print("L channel shape: ",l_channel.shape)
+    print("L channel shape: ", l_channel.shape)
     print("a_channel shape:", a_channel.shape)
     print("b_channel shape:", b_channel.shape)
 

@@ -12,6 +12,7 @@ class AugmentImageDataset(datasets.ImageFolder):
         img = self.loader(path)
         if self.transform is not None:
             img = self.transform(img)
+            
         original_image = np.asarray(img)
 
         img_lab = rgb2lab(original_image)
