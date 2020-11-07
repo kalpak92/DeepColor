@@ -1,6 +1,7 @@
 import argparse
 
 import torch
+import torchvision
 import torchvision.transforms as transforms
 import glob
 import matplotlib.pyplot as plt
@@ -10,13 +11,13 @@ import buildDataset
 import utils
 
 
-def show_img(img):
-    plt.figure(figsize=(18, 15))
-    # unnormalize
-    # img = img / 2 + 0.5
-    # np_img = img.numpy()
-    # np_img = np.clip(np_img, 0., 1.)
-    plt.imshow(np.transpose(img, (1, 2, 0)))
+def show_img(image):
+    plt.figure(figsize=(20, 20))
+    image = image / 2 + 0.5
+    np_img = image.numpy()
+    np_img = np.clip(np_img, 0, 1)
+    print("Hello")
+    plt.imshow(np.transpose(np_img, (1, 2, 0)))
     plt.show()
 
 
@@ -33,7 +34,7 @@ def load_data():
     print("Length of validation Image List", len(validation_image_list))
 
 
-def build_dataset(cuda=False, num_workers=0):
+def build_dataset(cuda=False, num_workers=1):
     # define pytorch transforms
     transform = transforms.Compose([
         transforms.Resize(128),
@@ -61,6 +62,8 @@ def build_dataset(cuda=False, num_workers=0):
     # print(current_image.shape)
     # # print("L: ", l_channel[0][0])
     # print("Sample: ",sample[0][0].shape)
+
+    show_img(torchvision.utils.make_grid(l_channel[0]))
 
 
 if __name__ == '__main__':
