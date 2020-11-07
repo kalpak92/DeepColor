@@ -1,6 +1,15 @@
 from shutil import copy2
 import os
+import numpy as np
+import matplotlib.pyplot as plt
 
+def show_img(image):
+    plt.figure(figsize=(20, 20))
+    # image = image / 2 + 0.5
+    np_img = image.numpy()
+    #np_img = np.clip(np_img, 0, 1)
+    plt.imshow(np.transpose(np_img, (1, 2, 0)))
+    plt.show()
 
 def train_test_split():
     os.makedirs('data/train/class/', exist_ok=True)

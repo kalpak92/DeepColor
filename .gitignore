@@ -3,3 +3,5 @@
 *.xml
 *.xml
 *.pyc
+*.pyc
+__pycache__/buildDataset.cpython-38.pyc

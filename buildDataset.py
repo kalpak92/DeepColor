@@ -1,4 +1,5 @@
 import torch
+import torchvision
 from skimage.color import rgb2lab, rgb2gray
 import numpy as np
 from torchvision import datasets
@@ -23,6 +24,8 @@ class AugmentImageDataset(datasets.ImageFolder):
         img_a = torch.from_numpy(img_a.transpose((2, 0, 1))).float()  # To match the channel dimensions
 
         img_b = img_lab[:, :, 2:3]
+        plt.imshow(img_b)
+        plt.show()
         img_b = torch.from_numpy(img_b.transpose((2, 0, 1))).float()
 
         img_gray = rgb2gray(original_image)

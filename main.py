@@ -1,25 +1,12 @@
 import argparse
-
 import torch
 import torchvision
 import torchvision.transforms as transforms
 import glob
-import matplotlib.pyplot as plt
-import numpy as np
+
 from torch.utils.data import DataLoader, ConcatDataset
 import buildDataset
 import utils
-
-
-def show_img(image):
-    plt.figure(figsize=(20, 20))
-    image = image / 2 + 0.5
-    np_img = image.numpy()
-    np_img = np.clip(np_img, 0, 1)
-    print("Hello")
-    plt.imshow(np.transpose(np_img, (1, 2, 0)))
-    plt.show()
-
 
 def load_data():
     image_list = glob.glob('face_images/*.jpg')
@@ -42,7 +29,9 @@ def build_dataset(cuda=False, num_workers=1):
         transforms.RandomResizedCrop(128)
     ])
 
-    train_datasets = [buildDataset.AugmentImageDataset('data/train')]
+    train_datasets = []
+    train_datasets.append(buildDataset.AugmentImageDataset('data/train'))
+
     for i in range(9):
         train_datasets.append(buildDataset.AugmentImageDataset('data/train', transform))
     augmented_dataset = ConcatDataset(train_datasets)
@@ -63,7 +52,9 @@ def build_dataset(cuda=False, num_workers=1):
     # # print("L: ", l_channel[0][0])
     # print("Sample: ",sample[0][0].shape)
 
-    show_img(torchvision.utils.make_grid(l_channel[0]))
+    utils.show_img(torchvision.utils.make_grid(l_channel))
+    utils.show_img(torchvision.utils.make_grid(a_channel))
+    utils.show_img(torchvision.utils.make_grid(b_channel))
 
 
 if __name__ == '__main__':
