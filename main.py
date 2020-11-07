@@ -14,9 +14,9 @@ def show_img(img):
     plt.figure(figsize=(18, 15))
     # unnormalize
     # img = img / 2 + 0.5
-    np_img = img.numpy()
-    np_img = np.clip(np_img, 0., 1.)
-    plt.imshow(np.transpose(np_img, (1, 2, 0)))
+    #np_img = img.numpy()
+    #np_img = np.clip(np_img, 0., 1.)
+    plt.imshow(np.transpose(img, (1, 2, 0)))
     plt.show()
 
 
@@ -36,13 +36,14 @@ def load_data():
 def build_dataset(cuda=False, num_workers=0):
     # define pytorch transforms
     transform = transforms.Compose([
-        transforms.Resize(256),
+        transforms.Resize(128),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomResizedCrop(256)
+        transforms.RandomResizedCrop(128)
     ])
 
     train_datasets = []
-    for i in range(10):
+    train_datasets.append(buildDataset.AugmentImageDataset('data/train'))
+    for i in range(9):
         train_datasets.append(buildDataset.AugmentImageDataset('data/train', transform))
     augmented_dataset = ConcatDataset(train_datasets)
     print("Length of Augmented Dataset", len(augmented_dataset))
@@ -52,9 +53,15 @@ def build_dataset(cuda=False, num_workers=0):
     augmented_dataset_batch = DataLoader(dataset=augmented_dataset, **train_loader_args)
     sample = next(iter(augmented_dataset_batch))
 
-    l_channel, ab_channel = sample
+    l_channel, a_channel, b_channel = sample
     print("L channel shape: ",l_channel.shape)
-    print("ab_channel shape:", ab_channel.shape)
+    print("a_channel shape:", a_channel.shape)
+    print("b_channel shape:", b_channel.shape)
+
+    # current_image = torch.vstack((l_channel[0], a_channel[0], b_channel[0]))
+    # print(current_image.shape)
+    # # print("L: ", l_channel[0][0])
+    # print("Sample: ",sample[0][0].shape)
 
 
 if __name__ == '__main__':
