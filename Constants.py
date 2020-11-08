@@ -1,5 +1,5 @@
 class Constants:
-    REGRESSOR_EPOCH = 500
+    REGRESSOR_EPOCH = 200
     REGRESSOR_SAVED_MODEL_PATH = "./Model/Regressor/Regressor.pth"
     REGRESSOR_LOSS_PLOT_PATH = "Plots/Regressor/Regressor_Loss_plot.jpeg"
     REGRESSOR_LR = 0.0001
