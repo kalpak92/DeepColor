@@ -1,5 +1,5 @@
-from Constants import Constants
 from Colorizer_Manager import Colorizer_Manager
+from Constants import Constants
 from Regressor_Manager import Regressor_Manager
 
 
@@ -20,7 +20,7 @@ class Colorize_deep:
         regressor_manager = Regressor_Manager()
         regressor_manager.train(regressor_train_arguments, device)
 
-    def execute_colorizer(self, augmented_dataset_batch, device):
+    def train_colorizer(self, augmented_dataset_batch, device):
         colorizer_train_arguments = {
             "data_loader": augmented_dataset_batch,
             "saved_model_path": Constants.COLORIZER_SAVED_MODEL_PATH,
@@ -34,7 +34,6 @@ class Colorize_deep:
 
         colorizer_manager = Colorizer_Manager()
         colorizer_manager.train(colorizer_train_arguments, device)
-
 
     def test_colorizer(self, augmented_dataset_batch, device):
         colorizer_train_arguments = {

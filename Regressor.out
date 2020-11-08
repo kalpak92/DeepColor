@@ -1,9 +1,0 @@
-Device: cuda:0
-Length of given Image List 750
-Number of images -  751
-Validation Set Size :  142
-Training Set Size :  741
-Length of training Image List 740
-Length of validation Image List 142
-Length of Augmented Dataset 7400
-..Training started..

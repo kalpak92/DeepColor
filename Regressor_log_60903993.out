@@ -1,7 +1,0 @@
-/home/shantanughosh/DeepColor/Regressor/DeepColor
-c36a-s28.ufhpc
-Sat Nov  7 16:07:24 EST 2020
-Deep Color Regressor
-/tmp/slurmd/job60903993/slurm_script: line 21:  4287 Killed                  python3 -u main.py > Regressor.out
-Sat Nov  7 16:07:35 EST 2020
-slurmstepd: error: Detected 1 oom-kill event(s) in step 60903993.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.

@@ -3,7 +3,7 @@
 #SBATCH --mail-type=ALL               # Mail events (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=shantanughosh@ufl.edu   # Where to send mail
 #SBATCH --ntasks=1                    # Run a single task
-#SBATCH --mem=16gb                   # Memory limit
+#SBATCH --mem=32gb                   # Memory limit
 #SBATCH --time=20:05:00               # Time limit hrs:min:sec
 
 #SBATCH --output=Regressor_log_%j.out   # Standard output and error log
@@ -11,7 +11,7 @@
 #SBATCH --account=cis6930
 #SBATCH --qos=cis6930
 #SBATCH --partition=gpu
-#SBATCH --gpus=tesla:1
+#SBATCH --gpus=1
 
 pwd; hostname; date
 
@@ -19,6 +19,6 @@ module load python
 
 echo "Deep Color Regressor"
 
-python3 -u main.py > Regressor100.out
+python3 -u main.py > Regressor500.out
 
 date

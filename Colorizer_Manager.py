@@ -70,7 +70,9 @@ class Colorizer_Manager:
         model.load_state_dict(torch.load(saved_model_path, map_location=device))
 
         lossF = nn.MSELoss()
+        serial_num = 0
         for batch in data_loader:
+            serial_num += 1
             l_channel, a_channel, b_channel = batch
             l_channel = l_channel.to(device)
 
@@ -78,18 +80,30 @@ class Colorizer_Manager:
             a_b_channel_hat = model(l_channel).detach()
 
             loss = lossF(a_b_channel, a_b_channel_hat)
+            print("Image: {0}, loss: {1}".format(serial_num, loss.item()))
+            # print("l_channel: ", l_channel.size())
+            # print(a_b_channel_hat.size())
 
-            print(l_channel.size())
-            print(a_b_channel_hat.size())
+            # image_original = torch.cat([l_channel, a_b_channel], dim=1)
+            # image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
 
-            image_original = torch.cat([l_channel, a_b_channel], dim=1)
-            image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
+            # print(image_original.size())
+            # print(image_reconst.size())
+            # print(image_reconst)
 
-            print(image_original.size())
-            print(image_reconst.size())
-            print(image_reconst)
+            # Utils.show_img_tensor(image_original[0])
+            save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
+            save_name_orig = 'Orig_img_{0}.jpg'.format(serial_num)
+            save_name_recons = 'Recons_img_{0}.jpg'.format(serial_num)
 
-            Utils.show_img_tensor(image_original[0])
-            Utils.show_img_tensor(image_reconst[0])
+            Utils.to_rgb(l_channel[0], a_b_channel[0],
+                         save_path=save_path, save_name=save_name_orig)
+            Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
+                         save_path=save_path, save_name=save_name_recons)
 
-            break
+            # Utils.show_img(torchvision.utils.make_grid(image_original))
+            # Utils.show_img(torchvision.utils.make_grid(l_channel))
+            # Utils.show_img(torchvision.utils.make_grid(image_reconst))
+
+            # Utils.show_img_tensor(image_original[0])
+            # Utils.show_img_tensor(image_reconst[0])
