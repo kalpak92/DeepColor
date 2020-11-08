@@ -1,5 +1,5 @@
 from Constants import Constants
-from DeepColorization.Colorizer_Manager import Colorizer_Manager
+from Colorizer_Manager import Colorizer_Manager
 from Regressor_Manager import Regressor_Manager
 
 
