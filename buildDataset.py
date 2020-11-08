@@ -17,7 +17,7 @@ class AugmentImageDataset(datasets.ImageFolder):
         original_image = np.asarray(img)
 
         img_lab = rgb2lab(original_image)
-        img_lab = (img_lab + 128) / 255
+        # img_lab = (img_lab + 128) / 255
         #img_lab = img_lab / 255
 
         img_a = img_lab[:, :, 1:2]
