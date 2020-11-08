@@ -38,7 +38,7 @@ class Colorizer(nn.Module):
 
                 nn.ConvTranspose2d(in_channels=hidden_channel, out_channels=out_channel,
                                    kernel_size=2, stride=2),
-                nn.ReLU(),
+                nn.Sigmoid(),
             )
 
     def forward(self, x):
