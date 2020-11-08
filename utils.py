@@ -62,3 +62,10 @@ class Utils:
         plt.draw()
         plt.savefig(fig_name, dpi=220)
         plt.clf()
+
+    @staticmethod
+    def show_img_tensor(image):
+        plt.figure(figsize=(20, 20))
+        plt.imshow(image.permute(1, 2, 0))
+        plt.show()
+        plt.clf()

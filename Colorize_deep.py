@@ -34,3 +34,16 @@ class Colorize_deep:
 
         colorizer_manager = Colorizer_Manager()
         colorizer_manager.train(colorizer_train_arguments, device)
+
+
+    def test_colorizer(self, augmented_dataset_batch, device):
+        colorizer_train_arguments = {
+            "data_loader": augmented_dataset_batch,
+            "saved_model_path": Constants.COLORIZER_SAVED_MODEL_PATH,
+            "in_channel": Constants.COLORIZER_IN_CHANNEL,
+            "hidden_channel": Constants.COLORIZER_HIDDEN_CHANNEL,
+            "loss_plot_path": Constants.COLORIZER_LOSS_PLOT_PATH
+        }
+
+        colorizer_manager = Colorizer_Manager()
+        colorizer_manager.test(colorizer_train_arguments, device)

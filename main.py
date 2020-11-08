@@ -55,6 +55,10 @@ def print_util_1(augmented_dataset_batch):
     print(output_hat.size())
     print(output_hat)
 
+    # Utils().show_img(torchvision.utils.make_grid(l_channel))
+    # Utils().show_img(torchvision.utils.make_grid(a_channel))
+    # Utils().show_img(torchvision.utils.make_grid(b_channel))
+
 
 def load_data():
     image_list = glob.glob('face_images/*.jpg')
@@ -89,7 +93,9 @@ def build_dataset(cuda=False, num_workers=1):
                              batch_size=Constants.REGRESSOR_BATCH_SIZE_CUDA,
                              num_workers=num_workers, pin_memory=True) \
         if cuda else dict(shuffle=True, batch_size=Constants.REGRESSOR_BATCH_SIZE_CPU)
-    augmented_dataset_batch = DataLoader(dataset=augmented_dataset, **train_loader_args)
+    augmented_dataset_batch_train = DataLoader(dataset=augmented_dataset, **train_loader_args)
+
+    augmented_dataset_batch_test = DataLoader(dataset=buildDataset.AugmentImageDataset('data/val'))
 
     # print(sample.size())
     # l_channel, a_channel, b_channel = sample
@@ -106,7 +112,7 @@ def build_dataset(cuda=False, num_workers=1):
     # utils.show_img(torchvision.utils.make_grid(a_channel))
     # utils.show_img(torchvision.utils.make_grid(b_channel))
 
-    return augmented_dataset_batch
+    return augmented_dataset_batch_train, augmented_dataset_batch_test
 
 
 if __name__ == '__main__':
@@ -117,9 +123,12 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=256, help='Batch size')
 
     load_data()
-    augmented_dataset_batch = build_dataset(is_cuda_present, num_workers)
-    # print_util_1(augmented_dataset_batch)
+    augmented_dataset_batch_train, \
+    augmented_dataset_batch_test = build_dataset(is_cuda_present, num_workers)
+    # print_util_1(augmented_dataset_batch_test)
 
     colorizer_deep = Colorize_deep()
-    # colorizer_deep.execute_regressor(augmented_dataset_batch, device)
-    colorizer_deep.execute_colorizer(augmented_dataset_batch, device)
+    # colorizer_deep.execute_regressor(augmented_dataset_batch_train, device)
+    # colorizer_deep.execute_colorizer(augmented_dataset_batch_train, device)
+
+    colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
