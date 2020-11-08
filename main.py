@@ -131,7 +131,8 @@ if __name__ == '__main__':
 
     colorizer_deep = Colorize_deep()
     # colorizer_deep.execute_regressor(augmented_dataset_batch_train, device)
-    # colorizer_deep.train_colorizer(augmented_dataset_batch_train, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
+                                   device)
 
     # colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
     Utils.show_output_image("outputs/gray/Orig_img_10.jpg", "Gray")

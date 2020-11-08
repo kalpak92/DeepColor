@@ -1,13 +1,15 @@
+import numpy as np
 import torch.utils.data
 from torch import nn, optim
 
 from Colorizer import Colorizer
-from utils import Utils
+from utils import Utils, EarlyStopping_DCN
 
 
 class Colorizer_Manager:
     def train(self, train_arguments, device):
-        data_loader = train_arguments["data_loader"]
+        train_data_loader = train_arguments["train_data_loader"]
+        val_data_loader = train_arguments["val_data_loader"]
         saved_model_path = train_arguments["saved_model_path"]
 
         epochs = train_arguments["epochs"]
@@ -24,13 +26,15 @@ class Colorizer_Manager:
         optimizer = optim.Adam(model.parameters(), lr=lr,
                                weight_decay=weight_decay)
         loss_train = []
-
+        early_stopping = EarlyStopping_DCN(patience=200, verbose=True,
+                                           model_path=saved_model_path)
         # start training
         for epoch in range(epochs):
-            total_loss = 0
+            total_loss_train = 0
+            total_loss_val = 0
             model.train()
 
-            for batch in data_loader:
+            for batch in train_data_loader:
                 l_channel, a_channel, b_channel = batch
                 l_channel = l_channel.to(device)
 
@@ -48,14 +52,48 @@ class Colorizer_Manager:
                 loss.backward()
                 optimizer.step()
 
-                total_loss += loss.item()
+                total_loss_train += loss.item()
 
             print("epoch: {0}, loss: {1}"
-                  .format(epoch, total_loss))
-            loss_train.append(total_loss)
+                  .format(epoch, total_loss_train))
+            loss_train.append(total_loss_train)
+
+            # validate the model #
+            valid_loss = self.validate(model, val_data_loader, lossF,
+                                       device)
+            early_stopping(valid_loss, model)
+
+            if early_stopping.early_stop:
+                print("Early stopping")
+                break
 
         Utils.plot_loss_epoch(loss_train, loss_plot_path)
         torch.save(model.state_dict(), saved_model_path)
+
+    @staticmethod
+    def validate(model, val_data_loader, lossF, device):
+        loss_valid = []
+        model.eval()
+
+        # val treated
+        for batch in val_data_loader:
+            l_channel, a_channel, b_channel = batch
+            l_channel = l_channel.to(device)
+
+            a_b_channel = torch.cat([a_channel, b_channel], dim=1)
+            a_b_channel_hat = model(l_channel)
+
+            if torch.cuda.is_available():
+                loss = lossF(a_b_channel_hat.float().cuda(),
+                             a_b_channel.float().cuda()).to(device)
+            else:
+                loss = lossF(a_b_channel_hat.float(),
+                             a_b_channel.float()).to(device)
+
+            loss_valid.append(loss.item())
+
+        valid_loss = np.average(loss_valid)
+        return valid_loss
 
     def test(self, test_arguments, device):
         data_loader = test_arguments["data_loader"]

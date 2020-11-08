@@ -1,11 +1,14 @@
 import os
 from shutil import copy2
 
+import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from skimage.color import lab2rgb
-import matplotlib.image as mpimg
+
+from Constants import Constants
+
 
 class Utils:
     @staticmethod
@@ -80,16 +83,15 @@ class Utils:
     @staticmethod
     def to_rgb(grayscale_input, ab_input, save_path=None, save_name=None):
         plt.clf()
-        color_image = torch.cat((grayscale_input, ab_input), 0).numpy() # combine channels
+        color_image = torch.cat((grayscale_input, ab_input), 0).numpy()  # combine channels
         color_image = color_image.transpose((1, 2, 0))  # rescale for matplotlib
         color_image[:, :, 0:1] = color_image[:, :, 0:1] * 100
         color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255
         color_image = lab2rgb(color_image.astype(np.float64))
         grayscale_input = grayscale_input.squeeze().numpy()
         if save_path is not None and save_name is not None:
-          plt.imsave(arr=grayscale_input, fname='{}{}'.format(save_path['grayscale'], save_name), cmap='gray')
-          plt.imsave(arr=color_image, fname='{}{}'.format(save_path['colorized'], save_name))
-
+            plt.imsave(arr=grayscale_input, fname='{}{}'.format(save_path['grayscale'], save_name), cmap='gray')
+            plt.imsave(arr=color_image, fname='{}{}'.format(save_path['colorized'], save_name))
 
     @staticmethod
     def show_output_image(path, title):
@@ -98,3 +100,57 @@ class Utils:
         plt.title(title)
         plt.imshow(image)
         plt.show()
+
+
+class EarlyStopping_DCN:
+    """Early stops the training if validation loss doesn't improve after a given patience."""
+
+    def __init__(self, patience=7, verbose=False, delta=0,
+                 model_path=Constants.COLORIZER_SAVED_MODEL_PATH,
+                 trace_func=print):
+        """
+        Args:
+            patience (int): How long to wait after last time validation loss improved.
+                            Default: 7
+            verbose (bool): If True, prints a message for each validation loss improvement.
+                            Default: False
+            delta (float): Minimum change in the monitored quantity to qualify as an improvement.
+                            Default: 0
+            path (str): Path for the checkpoint to be saved to.
+                            Default: 'checkpoint.pt'
+            trace_func (function): trace print function.
+                            Default: print
+        """
+        self.patience = patience
+        self.verbose = verbose
+        self.counter = 0
+        self.best_score = None
+        self.early_stop = False
+        self.val_loss_min = np.Inf
+        self.delta = delta
+        self.model_path = model_path
+        self.trace_func = trace_func
+
+    def __call__(self, val_loss, model):
+
+        score = -val_loss
+
+        if self.best_score is None:
+            self.best_score = score
+            self.save_checkpoint(val_loss, model)
+        elif score < self.best_score + self.delta:
+            self.counter += 1
+            self.trace_func(f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            if self.counter >= self.patience:
+                self.early_stop = True
+        else:
+            self.best_score = score
+            self.save_checkpoint(val_loss, model)
+            self.counter = 0
+
+    def save_checkpoint(self, val_loss, model):
+        if self.verbose:
+            self.trace_func(
+                f'Validation loss decreased ({self.val_loss_min} --> {val_loss}).  Saving model ...')
+        torch.save(model.state_dict(), self.model_path)
+        self.val_loss_min = val_loss

@@ -20,9 +20,11 @@ class Colorize_deep:
         regressor_manager = Regressor_Manager()
         regressor_manager.train(regressor_train_arguments, device)
 
-    def train_colorizer(self, augmented_dataset_batch, device):
+    def train_colorizer(self, augmented_dataset_batch, augmented_dataset_batch_val,
+                        device):
         colorizer_train_arguments = {
-            "data_loader": augmented_dataset_batch,
+            "train_data_loader": augmented_dataset_batch,
+            "val_data_loader": augmented_dataset_batch_val,
             "saved_model_path": Constants.COLORIZER_SAVED_MODEL_PATH,
             "epochs": Constants.COLORIZER_EPOCH,
             "learning_rate": Constants.COLORIZER_LR,
