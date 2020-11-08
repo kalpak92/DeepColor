@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import torch.utils.data
 from torch import nn, optim
 
@@ -19,7 +18,7 @@ class Regressor_Manager:
         out_dims = train_arguments["out_dims"]
         loss_plot_path = train_arguments["loss_plot_path"]
 
-        print("..Training started..")
+        print("..Regressor training started..")
         model = Regressor(in_channel=in_channel,
                           hidden_channel=hidden_channel,
                           out_dims=out_dims,
@@ -59,17 +58,5 @@ class Regressor_Manager:
                   .format(epoch, total_loss))
             loss_train.append(total_loss)
 
-        self.plot_loss_epoch(loss_train, loss_plot_path)
+        Utils.plot_loss_epoch(loss_train, loss_plot_path)
         torch.save(model.state_dict(), saved_model_path)
-
-    @staticmethod
-    def plot_loss_epoch(train_loss_avg, fig_name):
-        plt.ion()
-        fig = plt.figure()
-        plt.plot(train_loss_avg)
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        # plt.show()
-        plt.draw()
-        plt.savefig(fig_name, dpi=220)
-        plt.clf()

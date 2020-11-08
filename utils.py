@@ -50,3 +50,15 @@ class Utils:
         a_b_mean = torch.cat([a_channel_mean,
                               b_channel_mean], dim=1)
         return a_b_mean
+
+    @staticmethod
+    def plot_loss_epoch(train_loss_avg, fig_name):
+        plt.ion()
+        fig = plt.figure()
+        plt.plot(train_loss_avg)
+        plt.xlabel('Epochs')
+        plt.ylabel('Loss')
+        # plt.show()
+        plt.draw()
+        plt.savefig(fig_name, dpi=220)
+        plt.clf()

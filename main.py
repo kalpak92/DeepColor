@@ -6,9 +6,10 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, ConcatDataset
 
 import buildDataset
+from Colorize_deep import Colorize_deep
+from Colorizer import Colorizer
 from Constants import Constants
 from Regressor import Regressor
-from Regressor_Manager import Regressor_Manager
 from utils import Utils
 
 
@@ -39,6 +40,20 @@ def print_util(augmented_dataset_batch):
     a_b_orig = torch.cat([a_channel_mean, b_channel_mean], dim=1)
     print("t_orig_size: ", a_b_orig.size())
     print("t_orig: ", a_b_orig)
+
+
+def print_util_1(augmented_dataset_batch):
+    sample = next(iter(augmented_dataset_batch))
+    l_channel, a_channel, b_channel = sample
+
+    print("L channel shape: ", l_channel.shape)
+    print("a_channel shape:", a_channel.shape)
+    print("b_channel shape:", b_channel.shape)
+
+    colorizer = Colorizer(in_channel=3, hidden_channel=3, out_channel=2)
+    output_hat = colorizer(l_channel)
+    print(output_hat.size())
+    print(output_hat)
 
 
 def load_data():
@@ -103,19 +118,8 @@ if __name__ == '__main__':
 
     load_data()
     augmented_dataset_batch = build_dataset(is_cuda_present, num_workers)
-    # print_util(augmented_dataset_batch)
+    # print_util_1(augmented_dataset_batch)
 
-    regressor_train_arguments = {
-        "data_loader": augmented_dataset_batch,
-        "saved_model_path": Constants.REGRESSOR_SAVED_MODEL_PATH,
-        "epochs": Constants.REGRESSOR_EPOCH,
-        "learning_rate": Constants.REGRESSOR_LR,
-        "weight_decay": Constants.REGRESSOR_WEIGHT_DECAY,
-        "in_channel": Constants.REGRESSOR_IN_CHANNEL,
-        "hidden_channel": Constants.REGRESSOR_HIDDEN_CHANNEL,
-        "out_dims": Constants.REGRESSOR_OUT_DIMS,
-        "loss_plot_path": Constants.REGRESSOR_LOSS_PLOT_PATH
-    }
-
-    regressor_manager = Regressor_Manager()
-    regressor_manager.train(regressor_train_arguments, device)
+    colorizer_deep = Colorize_deep()
+    # colorizer_deep.execute_regressor(augmented_dataset_batch, device)
+    colorizer_deep.execute_colorizer(augmented_dataset_batch, device)
