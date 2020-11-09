@@ -192,9 +192,9 @@ def execute_colorizer_relu():
 
 if __name__ == '__main__':
     load_data()
-    # execute_colorizer_tanh()
+    execute_colorizer_tanh()
 
-    execute_colorizer_sigmoid()
+    # execute_colorizer_sigmoid()
 
     # execute_colorizer_relu()
 
