@@ -1,7 +1,7 @@
 from Colorizer_Manager import Colorizer_Manager
 from Constants import Constants
 from Regressor_Manager import Regressor_Manager
-
+from utils import Utils
 from itertools import product
 
 class Colorize_deep:
