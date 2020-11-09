@@ -65,6 +65,11 @@ class Colorizer_Manager:
         hidden_channel = test_arguments["hidden_channel"]
         loss_plot_path = test_arguments["loss_plot_path"]
 
+        save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
+        display_image_path_orig = {'grayscale': 'display/gray/', 'color': 'display/color/'}
+        display_image_path_reconstructed = {'grayscale': 'display/gray/',
+                                            'color': "display/reconstructed_color/"}
+
         print("..Colorizer Training started..")
         model = Colorizer(in_channel=in_channel, hidden_channel=hidden_channel, is_RELU=True).to(device)
         model.load_state_dict(torch.load(saved_model_path, map_location=device))
@@ -92,7 +97,7 @@ class Colorizer_Manager:
             # print(image_reconst)
 
             # Utils.show_img_tensor(image_original[0])
-            save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
+
             save_name_orig = 'Orig_img_{0}.jpg'.format(serial_num)
             save_name_recons = 'Recons_img_{0}.jpg'.format(serial_num)
 
@@ -100,6 +105,18 @@ class Colorizer_Manager:
                          save_path=save_path, save_name=save_name_orig)
             Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
                          save_path=save_path, save_name=save_name_recons)
+
+            if serial_num % 7 == 0:
+                display_image_original = {'grayscale': 'Orig_img_{0}.jpg'.format(serial_num),
+                                          'color': 'Orig_color_img_{0}.jpg'.format(serial_num)}
+                display_image_name_reconstructed = {'grayscale': 'Orig_img_{0}.jpg'.format(serial_num),
+                                                    'color': 'Reconstructed_color_img_{0}.jpg'.format(serial_num)}
+
+                Utils.to_rgb(l_channel[0], a_b_channel[0],
+                             display_path=display_image_path_orig, display_name=display_image_original)
+                Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
+                             display_path=display_image_path_reconstructed,
+                             display_name=display_image_name_reconstructed)
 
             # Utils.show_img(torchvision.utils.make_grid(image_original))
             # Utils.show_img(torchvision.utils.make_grid(l_channel))

@@ -133,7 +133,9 @@ if __name__ == '__main__':
     # colorizer_deep.execute_regressor(augmented_dataset_batch_train, device)
     # colorizer_deep.train_colorizer(augmented_dataset_batch_train, device)
 
-    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
-    Utils.show_output_image("outputs/gray/Orig_img_10.jpg", "Gray")
-    Utils.show_output_image("outputs/color/Orig_img_10.jpg", "Original")
-    Utils.show_output_image("outputs/color/Recons_img_10.jpg", "Reconstructed")
+    colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
+
+    Utils.display_result()
+    # Utils.show_output_image("outputs/gray/Orig_img_10.jpg", "Gray")
+    # Utils.show_output_image("outputs/color/Orig_img_10.jpg", "Original")
+    # Utils.show_output_image("outputs/color/Recons_img_10.jpg", "Reconstructed")
