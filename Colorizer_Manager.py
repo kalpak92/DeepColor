@@ -133,17 +133,7 @@ class Colorizer_Manager:
                              a_b_channel.float()).to(device)
 
             print("Image: {0}, loss: {1}".format(serial_num, loss.item()))
-            # print("l_channel: ", l_channel.size())
-            # print(a_b_channel_hat.size())
 
-            # image_original = torch.cat([l_channel, a_b_channel], dim=1)
-            # image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
-
-            # print(image_original.size())
-            # print(image_reconst.size())
-            # print(image_reconst)
-
-            # Utils.show_img_tensor(image_original[0])
             save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
                 .format(epoch, lr, weight_decay, serial_num)
             save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
@@ -155,12 +145,3 @@ class Colorizer_Manager:
             Utils.to_rgb(l_channel[0].cpu(), a_b_channel_hat[0].cpu(),
                          activation_function,
                          save_path=save_path, save_name=save_name_recons, device=device)
-
-            # Utils.show_img(torchvision.utils.make_grid(image_original))
-            # Utils.show_img(torchvision.utils.make_grid(l_channel))
-            # Utils.show_img(torchvision.utils.make_grid(image_reconst))
-
-            # Utils.show_img_tensor(image_original[0])
-            # Utils.show_img_tensor(image_reconst[0])
-
-            # break

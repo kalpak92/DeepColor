@@ -1,4 +1,5 @@
 import os
+import re
 from shutil import copy2
 
 import matplotlib.image as mpimg
@@ -14,8 +15,8 @@ class Utils:
     @staticmethod
     def get_hyperparameters():
         parameters = dict(
-            lr=[.001, 0.0001],
-            weight_decay=[0, 1e-5],
+            lr=[.001],
+            weight_decay=[1e-5],
             epoch=[100]
         )
         hyperparams_values = [v for v in parameters.values()]
@@ -94,6 +95,11 @@ class Utils:
         color_image = torch.cat((grayscale_input, ab_input), 0).numpy()  # combine channels
         color_image = color_image.transpose((1, 2, 0))  # rescale for matplotlib
         # print(color_image)
+        # print(color_image.min())
+        # if activation_function==Constants.TANH and bool(re.match('recons', save_name, re.I)):
+        #     # mean = torch.mean(color_image)
+        #     # std = torch.std()
+        #     color_image = (color_image + 0.4) /0.4
 
         color_image[:, :, 0:1] = color_image[:, :, 0:1] * 100
         color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255 - 128
