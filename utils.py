@@ -79,9 +79,9 @@ class Utils:
 
     @staticmethod
     def to_rgb(grayscale_input, ab_input, activation_function=Constants.TANH,
-               save_path=None, save_name=None):
+               save_path=None, save_name=None, device="cpu"):
         plt.clf()
-        color_image = torch.cat((grayscale_input, ab_input), 0).numpy()  # combine channels
+        color_image = torch.cat((grayscale_input, ab_input), 0).to(device).numpy()  # combine channels
         color_image = color_image.transpose((1, 2, 0))  # rescale for matplotlib
         # print(color_image)
 

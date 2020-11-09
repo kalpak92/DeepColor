@@ -149,10 +149,10 @@ class Colorizer_Manager:
 
             Utils.to_rgb(l_channel[0], a_b_channel[0],
                          activation_function,
-                         save_path=save_path, save_name=save_name_orig)
+                         save_path=save_path, save_name=save_name_orig, device=device)
             Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
                          activation_function,
-                         save_path=save_path, save_name=save_name_recons)
+                         save_path=save_path, save_name=save_name_recons, device=device)
 
             # Utils.show_img(torchvision.utils.make_grid(image_original))
             # Utils.show_img(torchvision.utils.make_grid(l_channel))
