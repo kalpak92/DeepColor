@@ -14,32 +14,32 @@ class Regressor(nn.Module):
             nn.Conv2d(in_channels=in_channel, out_channels=hidden_channel,
                       kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.Conv2d(in_channels=hidden_channel, out_channels=hidden_channel,
                       kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.Conv2d(in_channels=hidden_channel, out_channels=hidden_channel,
                       kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.Conv2d(in_channels=hidden_channel, out_channels=hidden_channel,
                       kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.Conv2d(in_channels=hidden_channel, out_channels=hidden_channel,
                       kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.Conv2d(in_channels=hidden_channel, out_channels=hidden_channel,
                       kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
         )
 
         if self.train_mode == "regressor":
