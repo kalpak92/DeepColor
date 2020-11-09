@@ -21,6 +21,19 @@ class Colorize_deep:
         regressor_manager = Regressor_Manager()
         regressor_manager.train(regressor_train_arguments, device)
 
+    def test_regressor(self, augmented_dataset_batch, device):
+        regressor_arguments = {
+            "data_loader": augmented_dataset_batch,
+            "saved_model_path": Constants.REGRESSOR_SAVED_MODEL_PATH,
+            "in_channel": Constants.REGRESSOR_IN_CHANNEL,
+            "hidden_channel": Constants.REGRESSOR_HIDDEN_CHANNEL,
+            "out_dims": Constants.REGRESSOR_OUT_DIMS,
+            "loss_plot_path": Constants.REGRESSOR_LOSS_PLOT_PATH
+        }
+
+        regressor_manager = Regressor_Manager()
+        regressor_manager.test(regressor_arguments, device)
+
     def train_colorizer(self, augmented_dataset_batch,
                         activation_function, model_name,
                         device):
