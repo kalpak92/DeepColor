@@ -15,8 +15,8 @@ class Utils:
     def get_hyperparameters():
         parameters = dict(
             lr=[.001, 0.0001],
-            weight_decay=[1e-5],
-            epoch=[100, 200]
+            weight_decay=[0, 1e-5],
+            epoch=[100]
         )
         hyperparams_values = [v for v in parameters.values()]
         return hyperparams_values
