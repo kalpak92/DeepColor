@@ -163,11 +163,11 @@ def execute_colorizer_sigmoid():
 
     colorizer_deep = Colorize_deep()
     # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
-    # colorizer_deep.train_colorizer(augmented_dataset_batch_train,
-    #                               activation_function, model_name, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train,
+                                  activation_function, model_name, device)
 
-    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
-                                  save_path, model_name, device)
+    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+    #                               save_path, model_name, device)
 
 
 def execute_colorizer_relu():
@@ -192,9 +192,9 @@ def execute_colorizer_relu():
 
 if __name__ == '__main__':
     load_data()
-    execute_colorizer_tanh()
+    # execute_colorizer_tanh()
 
-    # execute_colorizer_sigmoid()
+    execute_colorizer_sigmoid()
 
     # execute_colorizer_relu()
 
