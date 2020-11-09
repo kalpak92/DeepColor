@@ -14,8 +14,13 @@ from Constants import Constants
 class Utils:
     @staticmethod
     def get_hyperparameters():
+        # parameters = dict(
+        #     lr=[.001, 0.0001],
+        #     weight_decay=[0, 1e-5],
+        #     epoch=[100, 200, 400]
+        # )
         parameters = dict(
-            lr=[.001],
+            lr=[.0001],
             weight_decay=[1e-5],
             epoch=[100]
         )
