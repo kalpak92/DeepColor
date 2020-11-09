@@ -12,7 +12,7 @@ class Colorizer_Manager:
         print("Activation Function: ", activation_function)
 
         train_data_loader = train_arguments["train_data_loader"]
-        val_data_loader = train_arguments["val_data_loader"]
+        # val_data_loader = train_arguments["val_data_loader"]
         saved_model_path = train_arguments["saved_model_path"]
 
         epochs = train_arguments["epochs"]
@@ -63,16 +63,16 @@ class Colorizer_Manager:
             loss_train.append(total_loss_train)
 
             # validate the model #
-            valid_loss = self.validate(model, val_data_loader, lossF,
-                                       device)
-            early_stopping(valid_loss, model)
+            # valid_loss = self.validate(model, val_data_loader, lossF,
+            #                            device)
+            # early_stopping(valid_loss, model)
 
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
 
         Utils.plot_loss_epoch(loss_train, loss_plot_path)
-        # torch.save(model.state_dict(), saved_model_path)
+        torch.save(model.state_dict(), saved_model_path)
 
     @staticmethod
     def validate(model, val_data_loader, lossF, device):
