@@ -13,7 +13,7 @@ class Constants:
     COLORIZER_EPOCH = 100
     COLORIZER_SAVED_MODEL_PATH_TANH = "./Model/Colorizer/Colorizer_100_tanh.pth"
     COLORIZER_SAVED_MODEL_PATH_RELU = "./Model/Colorizer/Colorizer_100_relu.pth"
-    COLORIZER_SAVED_MODEL_PATH_SIGMOID = "./Model/Colorizer/Colorizer_sigmoid__no_early_stop100.pth.pth"
+    COLORIZER_SAVED_MODEL_PATH_SIGMOID = "./Model/Colorizer/Colorizer_100_sigmoid.pth"
     COLORIZER_LOSS_PLOT_PATH = "Plots/Colorizer/Colorizer_Loss_plot.jpeg"
     COLORIZER_LR = 0.0001
     COLORIZER_WEIGHT_DECAY = 1e-5
