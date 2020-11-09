@@ -12,6 +12,10 @@ class Constants:
 
     COLORIZER_EPOCH = 500
     COLORIZER_SAVED_MODEL_PATH = "./Model/Colorizer/Colorizer_100.pth"
+    COLORIZER_EPOCH = 100
+    COLORIZER_SAVED_MODEL_PATH_TANH = "./Model/Colorizer/Colorizer_tanh_epoch_{0}_lr_{1}_weight_decay_{2}.pth"
+    COLORIZER_SAVED_MODEL_PATH_RELU = "./Model/Colorizer/Colorizer_relu_epoch_{0}_lr_{1}_weight_decay_{2}.pth"
+    COLORIZER_SAVED_MODEL_PATH_SIGMOID = "./Model/Colorizer/Colorizer_sigmoid_epoch_{0}_lr_{1}_weight_decay_{2}.pth"
     COLORIZER_LOSS_PLOT_PATH = "Plots/Colorizer/Colorizer_Loss_plot.jpeg"
     COLORIZER_LR = 0.0001
     COLORIZER_WEIGHT_DECAY = 1e-5

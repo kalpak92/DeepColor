@@ -2,6 +2,7 @@ from Colorizer_Manager import Colorizer_Manager
 from Constants import Constants
 from Regressor_Manager import Regressor_Manager
 
+from itertools import product
 
 class Colorize_deep:
     def execute_regressor(self, augmented_dataset_batch, device):
@@ -34,6 +35,27 @@ class Colorize_deep:
 
         colorizer_manager = Colorizer_Manager()
         colorizer_manager.train(colorizer_train_arguments, device)
+
+    def train_colorizer(self, augmented_dataset_batch, augmented_dataset_batch_val,
+                        activation_function, model_name,
+                        device):
+        parameters = Utils.get_hyperparameters()
+        for lr, weight_decay, epoch in product(*parameters):
+            colorizer_train_arguments = {
+                "train_data_loader": augmented_dataset_batch,
+                "val_data_loader": augmented_dataset_batch_val,
+                "saved_model_path": model_name.format(epoch, lr, weight_decay),
+                "epochs": epoch,
+                "learning_rate": lr,
+                "weight_decay": weight_decay,
+                "in_channel": Constants.COLORIZER_IN_CHANNEL,
+                "hidden_channel": Constants.COLORIZER_HIDDEN_CHANNEL,
+                "loss_plot_path": Constants.COLORIZER_LOSS_PLOT_PATH
+            }
+
+            colorizer_manager = Colorizer_Manager()
+            colorizer_manager.train(colorizer_train_arguments,
+                                    activation_function, device)
 
     def test_colorizer(self, augmented_dataset_batch, device):
         colorizer_train_arguments = {

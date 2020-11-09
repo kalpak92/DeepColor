@@ -13,6 +13,16 @@ import matplotlib.image as mpimg
 
 class Utils:
     @staticmethod
+    def get_hyperparameters():
+        parameters = dict(
+            lr=[.001, 0.0001],
+            weight_decay=[1e-5, 1e-6],
+            epoch=[100, 200]
+        )
+        hyperparam_values = [v for v in parameters.values()]
+        return hyperparam_values
+
+    @staticmethod
     def show_img(image):
         plt.figure(figsize=(20, 20))
         # image = image / 2 + 0.5

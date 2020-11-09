@@ -110,7 +110,7 @@ def build_dataset(cuda=False, num_workers=1):
     # # print("L: ", l_channel[0][0])
     # print("Sample: ",sample[0][0].shape)
 
-    # utils.show_img(torchvision.utils.make_grid(l_channel))
+    # Utils.show_img(torchvision.utils.make_grid(l_channel))
     # utils.show_img(torchvision.utils.make_grid(a_channel))
     # utils.show_img(torchvision.utils.make_grid(b_channel))
 
@@ -132,6 +132,22 @@ if __name__ == '__main__':
     colorizer_deep = Colorize_deep()
     # colorizer_deep.execute_regressor(augmented_dataset_batch_train, device)
     # colorizer_deep.train_colorizer(augmented_dataset_batch_train, device)
+
+    colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
+                                 activation_function, model_name, device)
+
+    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+    #                               save_path, model_name, device)
+
+
+if __name__ == '__main__':
+    load_data()
+    execute_colorizer_tanh()
+
+    # execute_colorizer_sigmoid()
+
+    # execute_colorizer_relu()
 
     colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
 

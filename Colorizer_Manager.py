@@ -9,6 +9,7 @@ class Colorizer_Manager:
     def train(self, train_arguments, device):
         data_loader = train_arguments["data_loader"]
         saved_model_path = train_arguments["saved_model_path"]
+        print(saved_model_path)
 
         epochs = train_arguments["epochs"]
         lr = train_arguments["learning_rate"]
