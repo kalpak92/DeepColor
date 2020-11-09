@@ -1,4 +1,3 @@
-import argparse
 import glob
 
 import torch
@@ -131,28 +130,76 @@ def build_dataset(cuda=False, num_workers=1,
     return augmented_dataset_batch_train, augmented_dataset_batch_val, augmented_dataset_batch_test
 
 
-if __name__ == '__main__':
+def execute_colorizer_tanh():
     activation_function = Constants.TANH
-
+    save_path = {'grayscale': 'outputs_tanh/gray/', 'colorized': 'outputs_tanh/color/'}
     device, is_cuda_present, num_workers = Utils.get_device()
+    model_name = Constants.COLORIZER_SAVED_MODEL_PATH_TANH
+
     print("Device: {0}".format(device))
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--batch_size', type=int, default=256, help='Batch size')
-
-    load_data()
-
     augmented_dataset_batch_train, augmented_dataset_batch_val, \
     augmented_dataset_batch_test = build_dataset(is_cuda_present, num_workers,
                                                  activation_function)
-    # print_util_1(augmented_dataset_batch_test, activation_function)
 
     colorizer_deep = Colorize_deep()
     # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
     colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
-                                 activation_function, device)
+                                 activation_function, model_name, device)
 
-    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
-    # Utils.show_output_image("outputs/gray/Orig_img_10.jpg", "Gray")
-    # Utils.show_output_image("outputs/color/Orig_img_10.jpg", "Original")
-    # Utils.show_output_image("outputs/color/Recons_img_10.jpg", "Reconstructed")
+    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+                                  save_path, model_name, device)
+
+
+def execute_colorizer_sigmoid():
+    activation_function = Constants.SIGMOID
+    save_path = {'grayscale': 'outputs_sigmoid/gray/', 'colorized': 'outputs_sigmoid/color/'}
+    device, is_cuda_present, num_workers = Utils.get_device()
+    model_name = Constants.COLORIZER_SAVED_MODEL_PATH_SIGMOID
+
+    print("Device: {0}".format(device))
+    augmented_dataset_batch_train, augmented_dataset_batch_val, \
+    augmented_dataset_batch_test = build_dataset(is_cuda_present, num_workers,
+                                                 activation_function)
+
+    colorizer_deep = Colorize_deep()
+    # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
+    # colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
+    #                              activation_function, model_name, device)
+
+    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+                                  save_path, model_name, device)
+
+
+def execute_colorizer_relu():
+    activation_function = Constants.RELU
+    save_path = {'grayscale': 'outputs_relu/gray/', 'colorized': 'outputs_relu/color/'}
+    device, is_cuda_present, num_workers = Utils.get_device()
+    model_name = Constants.COLORIZER_SAVED_MODEL_PATH_RELU
+
+    print("Device: {0}".format(device))
+    augmented_dataset_batch_train, augmented_dataset_batch_val, \
+    augmented_dataset_batch_test = build_dataset(is_cuda_present, num_workers,
+                                                 activation_function)
+
+    colorizer_deep = Colorize_deep()
+    # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
+    # colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
+    #                              activation_function, model_name, device)
+
+    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+                                  save_path, model_name, device)
+
+
+if __name__ == '__main__':
+    load_data()
+    # execute_colorizer_tanh()
+
+    execute_colorizer_sigmoid()
+
+    # execute_colorizer_relu()
+
+    # print_util_1(augmented_dataset_batch_test, activation_function)
+
+    # Utils.show_output_image("outputs_tanh/gray/Orig_img_10.jpg", "Gray")
+    # Utils.show_output_image("outputs_tanh/color/Orig_img_10.jpg", "Original")
+    # Utils.show_output_image("outputs_tanh/color/Recons_img_10.jpg", "Reconstructed")

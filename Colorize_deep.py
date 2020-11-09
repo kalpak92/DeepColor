@@ -21,12 +21,12 @@ class Colorize_deep:
         regressor_manager.train(regressor_train_arguments, device)
 
     def train_colorizer(self, augmented_dataset_batch, augmented_dataset_batch_val,
-                        activation_function,
+                        activation_function, model_name,
                         device):
         colorizer_train_arguments = {
             "train_data_loader": augmented_dataset_batch,
             "val_data_loader": augmented_dataset_batch_val,
-            "saved_model_path": Constants.COLORIZER_SAVED_MODEL_PATH,
+            "saved_model_path": model_name,
             "epochs": Constants.COLORIZER_EPOCH,
             "learning_rate": Constants.COLORIZER_LR,
             "weight_decay": Constants.COLORIZER_WEIGHT_DECAY,
@@ -39,14 +39,17 @@ class Colorize_deep:
         colorizer_manager.train(colorizer_train_arguments,
                                 activation_function, device)
 
-    def test_colorizer(self, augmented_dataset_batch, device):
+    def test_colorizer(self, augmented_dataset_batch,
+                       activation_function, save_path, model_name, device):
         colorizer_train_arguments = {
             "data_loader": augmented_dataset_batch,
-            "saved_model_path": Constants.COLORIZER_SAVED_MODEL_PATH,
+            "saved_model_path": model_name,
             "in_channel": Constants.COLORIZER_IN_CHANNEL,
             "hidden_channel": Constants.COLORIZER_HIDDEN_CHANNEL,
             "loss_plot_path": Constants.COLORIZER_LOSS_PLOT_PATH
         }
 
         colorizer_manager = Colorizer_Manager()
-        colorizer_manager.test(colorizer_train_arguments, device)
+        colorizer_manager.test(colorizer_train_arguments,
+                               activation_function, save_path,
+                               device)

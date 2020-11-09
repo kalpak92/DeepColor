@@ -1,5 +1,6 @@
 import numpy as np
 import torch.utils.data
+import torchvision
 from torch import nn, optim
 
 from Colorizer import Colorizer
@@ -98,7 +99,9 @@ class Colorizer_Manager:
         valid_loss = np.average(loss_valid)
         return valid_loss
 
-    def test(self, test_arguments, device):
+    def test(self, test_arguments, activation_function, save_path,
+             device):
+        print(activation_function)
         data_loader = test_arguments["data_loader"]
         saved_model_path = test_arguments["saved_model_path"]
 
@@ -106,8 +109,10 @@ class Colorizer_Manager:
         hidden_channel = test_arguments["hidden_channel"]
         loss_plot_path = test_arguments["loss_plot_path"]
 
-        print("..Colorizer Training started..")
-        model = Colorizer(in_channel=in_channel, hidden_channel=hidden_channel, is_RELU=False).to(device)
+        print("..Colorizer Test started..")
+        model = Colorizer(in_channel=in_channel,
+                          hidden_channel=hidden_channel,
+                          activation_function=activation_function).to(device)
         model.load_state_dict(torch.load(saved_model_path, map_location=device))
 
         lossF = nn.MSELoss()
@@ -125,21 +130,22 @@ class Colorizer_Manager:
             # print("l_channel: ", l_channel.size())
             # print(a_b_channel_hat.size())
 
-            # image_original = torch.cat([l_channel, a_b_channel], dim=1)
-            # image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
+            image_original = torch.cat([l_channel, a_b_channel], dim=1)
+            image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
 
             # print(image_original.size())
             # print(image_reconst.size())
             # print(image_reconst)
 
             # Utils.show_img_tensor(image_original[0])
-            save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
             save_name_orig = 'Orig_img_{0}.jpg'.format(serial_num)
             save_name_recons = 'Recons_img_{0}.jpg'.format(serial_num)
 
             Utils.to_rgb(l_channel[0], a_b_channel[0],
+                         activation_function,
                          save_path=save_path, save_name=save_name_orig)
             Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
+                         activation_function,
                          save_path=save_path, save_name=save_name_recons)
 
             # Utils.show_img(torchvision.utils.make_grid(image_original))
@@ -148,3 +154,5 @@ class Colorizer_Manager:
 
             # Utils.show_img_tensor(image_original[0])
             # Utils.show_img_tensor(image_reconst[0])
+
+            # break

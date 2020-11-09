@@ -46,7 +46,7 @@ class AugmentImageDataset_Tanh(datasets.ImageFolder):
 
         img_lab = rgb2lab(original_image)
         img_lab = img_lab / 255
-        # img_lab = (img_lab - 0.5) / 0.5
+        img_lab = (img_lab - 0.5) / 0.5
 
         img_a = img_lab[:, :, 1:2]
         img_a = torch.from_numpy(img_a.transpose((2, 0, 1))).float()  # To match the channel dimensions

@@ -81,10 +81,16 @@ class Utils:
         plt.clf()
 
     @staticmethod
-    def to_rgb(grayscale_input, ab_input, save_path=None, save_name=None):
+    def to_rgb(grayscale_input, ab_input, activation_function=Constants.TANH,
+               save_path=None, save_name=None):
         plt.clf()
         color_image = torch.cat((grayscale_input, ab_input), 0).numpy()  # combine channels
         color_image = color_image.transpose((1, 2, 0))  # rescale for matplotlib
+        if activation_function == Constants.TANH:
+            color_image = ((color_image * 0.5) + 0.5)
+
+        # print(color_image)
+
         color_image[:, :, 0:1] = color_image[:, :, 0:1] * 100
         color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255
         color_image = lab2rgb(color_image.astype(np.float64))
@@ -106,7 +112,7 @@ class EarlyStopping_DCN:
     """Early stops the training if validation loss doesn't improve after a given patience."""
 
     def __init__(self, patience=7, verbose=False, delta=0,
-                 model_path=Constants.COLORIZER_SAVED_MODEL_PATH,
+                 model_path=None,
                  trace_func=print):
         """
         Args:
