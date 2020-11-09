@@ -26,6 +26,7 @@ class Colorize_deep:
                         device):
         parameters = Utils.get_hyperparameters()
         for lr, weight_decay, epoch in product(*parameters):
+            print("Run - epoch: {0} lr: {1} weight_decay:{2}".format(epoch, lr, weight_decay))
             colorizer_train_arguments = {
                 "train_data_loader": augmented_dataset_batch,
                 # "val_data_loader": augmented_dataset_batch_val,
@@ -44,15 +45,19 @@ class Colorize_deep:
 
     def test_colorizer(self, augmented_dataset_batch,
                        activation_function, save_path, model_name, device):
-        colorizer_train_arguments = {
-            "data_loader": augmented_dataset_batch,
-            "saved_model_path": model_name,
-            "in_channel": Constants.COLORIZER_IN_CHANNEL,
-            "hidden_channel": Constants.COLORIZER_HIDDEN_CHANNEL,
-            "loss_plot_path": Constants.COLORIZER_LOSS_PLOT_PATH
-        }
+        parameters = Utils.get_hyperparameters()
+        for lr, weight_decay, epoch in product(*parameters):
+            print("----"*10)
+            print("Run - epoch: {0} lr: {1} weight_decay:{2}".format(epoch, lr, weight_decay))
+            colorizer_train_arguments = {
+                "data_loader": augmented_dataset_batch,
+                "saved_model_path": model_name.format(epoch, lr, weight_decay),
+                "in_channel": Constants.COLORIZER_IN_CHANNEL,
+                "hidden_channel": Constants.COLORIZER_HIDDEN_CHANNEL,
+                "loss_plot_path": Constants.COLORIZER_LOSS_PLOT_PATH,
+            }
 
-        colorizer_manager = Colorizer_Manager()
-        colorizer_manager.test(colorizer_train_arguments,
-                               activation_function, save_path,
-                               device)
+            colorizer_manager = Colorizer_Manager()
+            colorizer_manager.test(colorizer_train_arguments,
+                                   activation_function, save_path,
+                                   device, lr, weight_decay, epoch)

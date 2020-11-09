@@ -100,7 +100,7 @@ class Colorizer_Manager:
         return valid_loss
 
     def test(self, test_arguments, activation_function, save_path,
-             device):
+             device, lr, weight_decay, epoch):
         print(activation_function)
         data_loader = test_arguments["data_loader"]
         saved_model_path = test_arguments["saved_model_path"]
@@ -144,8 +144,10 @@ class Colorizer_Manager:
             # print(image_reconst)
 
             # Utils.show_img_tensor(image_original[0])
-            save_name_orig = 'Orig_img_{0}.jpg'.format(serial_num)
-            save_name_recons = 'Recons_img_{0}.jpg'.format(serial_num)
+            save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
+                .format(lr, weight_decay, epoch, serial_num)
+            save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
+                .format(lr, weight_decay, epoch, serial_num)
 
             Utils.to_rgb(l_channel[0].cpu(), a_b_channel[0].cpu(),
                          activation_function,
