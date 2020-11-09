@@ -147,10 +147,10 @@ class Colorizer_Manager:
             save_name_orig = 'Orig_img_{0}.jpg'.format(serial_num)
             save_name_recons = 'Recons_img_{0}.jpg'.format(serial_num)
 
-            Utils.to_rgb(l_channel[0], a_b_channel[0],
+            Utils.to_rgb(l_channel[0].cpu(), a_b_channel[0].cpu(),
                          activation_function,
                          save_path=save_path, save_name=save_name_orig, device=device)
-            Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
+            Utils.to_rgb(l_channel[0].cpu(), a_b_channel_hat[0].cpu(),
                          activation_function,
                          save_path=save_path, save_name=save_name_recons, device=device)
 
