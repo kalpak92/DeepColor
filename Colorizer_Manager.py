@@ -125,7 +125,13 @@ class Colorizer_Manager:
             a_b_channel = torch.cat([a_channel, b_channel], dim=1)
             a_b_channel_hat = model(l_channel).detach()
 
-            loss = lossF(a_b_channel, a_b_channel_hat)
+            if torch.cuda.is_available():
+                loss = lossF(a_b_channel_hat.float().cuda(),
+                             a_b_channel.float().cuda()).to(device)
+            else:
+                loss = lossF(a_b_channel_hat.float(),
+                             a_b_channel.float()).to(device)
+
             print("Image: {0}, loss: {1}".format(serial_num, loss.item()))
             # print("l_channel: ", l_channel.size())
             # print(a_b_channel_hat.size())
