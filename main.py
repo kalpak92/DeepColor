@@ -146,8 +146,8 @@ def execute_colorizer_tanh():
     colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
                                  activation_function, model_name, device)
 
-    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
-                                  save_path, model_name, device)
+    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+    #                               save_path, model_name, device)
 
 
 def execute_colorizer_sigmoid():
@@ -162,12 +162,12 @@ def execute_colorizer_sigmoid():
                                                  activation_function)
 
     colorizer_deep = Colorize_deep()
-    # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
-    # colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
-    #                              activation_function, model_name, device)
+    colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
+                                 activation_function, model_name, device)
 
-    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
-                                  save_path, model_name, device)
+    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+    #                               save_path, model_name, device)
 
 
 def execute_colorizer_relu():
@@ -182,21 +182,21 @@ def execute_colorizer_relu():
                                                  activation_function)
 
     colorizer_deep = Colorize_deep()
-    # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
-    # colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
-    #                              activation_function, model_name, device)
+    colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
+                                 activation_function, model_name, device)
 
-    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
-                                  save_path, model_name, device)
+    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+    #                               save_path, model_name, device)
 
 
 if __name__ == '__main__':
     load_data()
-    # execute_colorizer_tanh()
+    execute_colorizer_tanh()
 
     execute_colorizer_sigmoid()
 
-    # execute_colorizer_relu()
+    execute_colorizer_relu()
 
     # print_util_1(augmented_dataset_batch_test, activation_function)
 
