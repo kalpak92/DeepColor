@@ -145,9 +145,9 @@ class Colorizer_Manager:
 
             # Utils.show_img_tensor(image_original[0])
             save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
-                .format(lr, weight_decay, epoch, serial_num)
+                .format(epoch, lr, weight_decay, serial_num)
             save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
-                .format(lr, weight_decay, epoch, serial_num)
+                .format(epoch, lr, weight_decay, serial_num)
 
             Utils.to_rgb(l_channel[0].cpu(), a_b_channel[0].cpu(),
                          activation_function,
