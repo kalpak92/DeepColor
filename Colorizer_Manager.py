@@ -7,7 +7,9 @@ from utils import Utils, EarlyStopping_DCN
 
 
 class Colorizer_Manager:
-    def train(self, train_arguments, device):
+    def train(self, train_arguments, activation_function, device):
+        print("Activation Function: ", activation_function)
+
         train_data_loader = train_arguments["train_data_loader"]
         val_data_loader = train_arguments["val_data_loader"]
         saved_model_path = train_arguments["saved_model_path"]
@@ -20,13 +22,14 @@ class Colorizer_Manager:
         loss_plot_path = train_arguments["loss_plot_path"]
 
         print("..Colorizer Training started..")
-        model = Colorizer(in_channel=3, hidden_channel=3, is_RELU=True).to(device)
+        model = Colorizer(in_channel=3, hidden_channel=3,
+                          activation_function=activation_function).to(device)
 
         lossF = nn.MSELoss()
         optimizer = optim.Adam(model.parameters(), lr=lr,
                                weight_decay=weight_decay)
         loss_train = []
-        early_stopping = EarlyStopping_DCN(patience=200, verbose=True,
+        early_stopping = EarlyStopping_DCN(patience=50, verbose=True,
                                            model_path=saved_model_path)
         # start training
         for epoch in range(epochs):
@@ -68,7 +71,7 @@ class Colorizer_Manager:
                 break
 
         Utils.plot_loss_epoch(loss_train, loss_plot_path)
-        torch.save(model.state_dict(), saved_model_path)
+        # torch.save(model.state_dict(), saved_model_path)
 
     @staticmethod
     def validate(model, val_data_loader, lossF, device):
@@ -104,7 +107,7 @@ class Colorizer_Manager:
         loss_plot_path = test_arguments["loss_plot_path"]
 
         print("..Colorizer Training started..")
-        model = Colorizer(in_channel=in_channel, hidden_channel=hidden_channel, is_RELU=True).to(device)
+        model = Colorizer(in_channel=in_channel, hidden_channel=hidden_channel, is_RELU=False).to(device)
         model.load_state_dict(torch.load(saved_model_path, map_location=device))
 
         lossF = nn.MSELoss()

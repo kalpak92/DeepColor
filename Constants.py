@@ -10,7 +10,7 @@ class Constants:
     REGRESSOR_BATCH_SIZE_CPU = 32
     REGRESSOR_BATCH_SIZE_CUDA = 256
 
-    COLORIZER_EPOCH = 500
+    COLORIZER_EPOCH = 100
     COLORIZER_SAVED_MODEL_PATH = "./Model/Colorizer/Colorizer_100.pth"
     COLORIZER_LOSS_PLOT_PATH = "Plots/Colorizer/Colorizer_Loss_plot.jpeg"
     COLORIZER_LR = 0.0001
@@ -20,3 +20,7 @@ class Constants:
     COLORIZER_OUT_DIMS = 2
     COLORIZER_BATCH_SIZE_CPU = 32
     COLORIZER_BATCH_SIZE_CUDA = 256
+
+    TANH = "tanh"
+    RELU = "relu"
+    SIGMOID = "sigmoid"

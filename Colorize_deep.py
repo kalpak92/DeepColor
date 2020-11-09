@@ -4,7 +4,7 @@ from Regressor_Manager import Regressor_Manager
 
 
 class Colorize_deep:
-    def execute_regressor(self, augmented_dataset_batch, device):
+    def train_regressor(self, augmented_dataset_batch, device):
         regressor_train_arguments = {
             "data_loader": augmented_dataset_batch,
             "saved_model_path": Constants.REGRESSOR_SAVED_MODEL_PATH,
@@ -21,6 +21,7 @@ class Colorize_deep:
         regressor_manager.train(regressor_train_arguments, device)
 
     def train_colorizer(self, augmented_dataset_batch, augmented_dataset_batch_val,
+                        activation_function,
                         device):
         colorizer_train_arguments = {
             "train_data_loader": augmented_dataset_batch,
@@ -35,7 +36,8 @@ class Colorize_deep:
         }
 
         colorizer_manager = Colorizer_Manager()
-        colorizer_manager.train(colorizer_train_arguments, device)
+        colorizer_manager.train(colorizer_train_arguments,
+                                activation_function, device)
 
     def test_colorizer(self, augmented_dataset_batch, device):
         colorizer_train_arguments = {
