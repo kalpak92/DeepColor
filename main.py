@@ -98,15 +98,8 @@ def build_dataset(cuda=False, num_workers=1,
         elif activation_function == Constants.RELU:
             train_datasets.append(buildDataset.AugmentImageDataset_RELU('data/train', transform))
         elif activation_function == Constants.TANH:
-            train_datasets.append(buildDataset.AugmentImageDataset_RELU('data/train',
-                                                                        transforms.Compose([
-                                                                            transforms.Resize(128),
-                                                                            transforms.RandomHorizontalFlip(),
-                                                                            transforms.RandomResizedCrop(128),
-                                                                            transforms.ToTensor(),
-                                                                            transforms.Normalize((0.5, 0.5, 0.5),
-                                                                                                 (0.5, 0.5, 0.5))
-                                                                        ])))
+            train_datasets.append(buildDataset.AugmentImageDataset_Tanh('data/train',
+                                                                        transform))
 
     augmented_dataset = ConcatDataset(train_datasets)
     print("Length of Augmented Dataset", len(augmented_dataset))
@@ -157,7 +150,7 @@ if __name__ == '__main__':
     colorizer_deep = Colorize_deep()
     # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
     colorizer_deep.train_colorizer(augmented_dataset_batch_train, augmented_dataset_batch_val,
-                                  activation_function, device)
+                                 activation_function, device)
 
     # colorizer_deep.test_colorizer(augmented_dataset_batch_test, device)
     # Utils.show_output_image("outputs/gray/Orig_img_10.jpg", "Gray")
