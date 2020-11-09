@@ -136,8 +136,8 @@ class Colorizer_Manager:
             # print("l_channel: ", l_channel.size())
             # print(a_b_channel_hat.size())
 
-            image_original = torch.cat([l_channel, a_b_channel], dim=1)
-            image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
+            # image_original = torch.cat([l_channel, a_b_channel], dim=1)
+            # image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
 
             # print(image_original.size())
             # print(image_reconst.size())
