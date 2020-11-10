@@ -75,14 +75,14 @@ def execute_colorizer_tanh():
                                                  activation_function)
 
     colorizer_deep = Colorize_deep()
-    # colorizer_deep.train_colorizer(augmented_dataset_batch_train,
-    #                                activation_function, model_name, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train,
+                                   activation_function, model_name, device)
 
     colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
                                   save_path, model_name, device)
 
     # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
-    colorizer_deep.test_regressor(augmented_dataset_batch_test, device)
+    # colorizer_deep.test_regressor(augmented_dataset_batch_test, device)
 
 
 def execute_colorizer_sigmoid():
@@ -97,11 +97,11 @@ def execute_colorizer_sigmoid():
                                                  activation_function)
 
     colorizer_deep = Colorize_deep()
-    # colorizer_deep.train_colorizer(augmented_dataset_batch_train,
-    #                                activation_function, model_name, device)
-    #
-    # colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
-    #                               save_path, model_name, device)
+    colorizer_deep.train_colorizer(augmented_dataset_batch_train,
+                                   activation_function, model_name, device)
+
+    colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
+                                  save_path, model_name, device)
 
     colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
     colorizer_deep.test_regressor(augmented_dataset_batch_test, device)
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     load_data()
 
     print("Normal Credit - Sigmoid")
-    execute_colorizer_sigmoid()
+    # execute_colorizer_sigmoid()
 
     print("Extra Credit - Tanh")
-    # execute_colorizer_tanh()
+    execute_colorizer_tanh()
