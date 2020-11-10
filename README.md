@@ -1,7 +1,5 @@
 # Deep Color
 
-Contributors : [Kalpak Seal](https://github.com/kalpak92) [Shantanu Ghosh](https://github.com/Shantanu48114860)
-
 ## Program Execution
 
 ```shell
@@ -81,4 +79,13 @@ The code extracts the `device` at the start of execution using ` torch.cuda.is_a
 
 
 ## Summary
+
+
+
+
+
+## Contributors
+
+- [Kalpak Seal](https://github.com/kalpak92)
+- [Shantanu Ghosh](https://github.com/Shantanu48114860)
 
