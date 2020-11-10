@@ -1,5 +1,7 @@
 # Deep Color
 
+Contributors : [Kalpak Seal](https://github.com/kalpak92) [Shantanu Ghosh](https://github.com/Shantanu48114860)
+
 ## Program Execution
 
 ```shell
