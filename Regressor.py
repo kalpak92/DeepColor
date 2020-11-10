@@ -42,14 +42,14 @@ class Regressor(nn.Module):
             nn.LeakyReLU(),
         )
 
-        # if self.train_mode == "regressor":
-        #     self.lin = nn.Linear(in_features=50 * 2 * 2, out_features=out_dims)
+        if self.train_mode == "regressor":
+            self.lin = nn.Linear(in_features=50 * 2 * 2, out_features=out_dims)
 
     def forward(self, x):
         feature_maps = self.feature_maps(x)
         if self.train_mode == "regressor":
-            # y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 50 * 2 * 2)))
-            return feature_maps
+            y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 50 * 2 * 2)))
+            return y_hat
 
         else:
             return feature_maps
