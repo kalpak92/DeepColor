@@ -12,7 +12,7 @@ class Colorizer_Manager:
         print("Activation Function: ", activation_function)
 
         train_data_loader = train_arguments["train_data_loader"]
-        val_data_loader = train_arguments["val_data_loader"]
+        # val_data_loader = train_arguments["val_data_loader"]
         saved_model_path = train_arguments["saved_model_path"]
 
         epochs = train_arguments["epochs"]
@@ -63,16 +63,16 @@ class Colorizer_Manager:
             loss_train.append(total_loss_train)
 
             # validate the model #
-            valid_loss = self.validate(model, val_data_loader, lossF,
-                                       device)
-            early_stopping(valid_loss, model)
+            # valid_loss = self.validate(model, val_data_loader, lossF,
+            #                            device)
+            # early_stopping(valid_loss, model)
 
             if early_stopping.early_stop:
                 print("Early stopping")
                 break
 
         Utils.plot_loss_epoch(loss_train, loss_plot_path)
-        # torch.save(model.state_dict(), saved_model_path)
+        torch.save(model.state_dict(), saved_model_path)
 
     @staticmethod
     def validate(model, val_data_loader, lossF, device):
@@ -100,7 +100,7 @@ class Colorizer_Manager:
         return valid_loss
 
     def test(self, test_arguments, activation_function, save_path,
-             device):
+             device, lr, weight_decay, epoch):
         print(activation_function)
         data_loader = test_arguments["data_loader"]
         saved_model_path = test_arguments["saved_model_path"]
@@ -125,34 +125,42 @@ class Colorizer_Manager:
             a_b_channel = torch.cat([a_channel, b_channel], dim=1)
             a_b_channel_hat = model(l_channel).detach()
 
-            loss = lossF(a_b_channel, a_b_channel_hat)
+            if torch.cuda.is_available():
+                loss = lossF(a_b_channel_hat.float().cuda(),
+                             a_b_channel.float().cuda()).to(device)
+            else:
+                loss = lossF(a_b_channel_hat.float(),
+                             a_b_channel.float()).to(device)
+
             print("Image: {0}, loss: {1}".format(serial_num, loss.item()))
-            # print("l_channel: ", l_channel.size())
-            # print(a_b_channel_hat.size())
 
-            image_original = torch.cat([l_channel, a_b_channel], dim=1)
-            image_reconst = torch.cat([l_channel, a_b_channel_hat], dim=1)
+            save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
+                .format(epoch, lr, weight_decay, serial_num)
+            save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
+                .format(epoch, lr, weight_decay, serial_num)
 
-            # print(image_original.size())
-            # print(image_reconst.size())
-            # print(image_reconst)
-
-            # Utils.show_img_tensor(image_original[0])
-            save_name_orig = 'Orig_img_{0}.jpg'.format(serial_num)
-            save_name_recons = 'Recons_img_{0}.jpg'.format(serial_num)
-
-            Utils.to_rgb(l_channel[0], a_b_channel[0],
+            Utils.to_rgb(l_channel[0].cpu(), a_b_channel[0].cpu(),
                          activation_function,
-                         save_path=save_path, save_name=save_name_orig)
-            Utils.to_rgb(l_channel[0], a_b_channel_hat[0],
+                         save_path=save_path, save_name=save_name_orig, device=device)
+            Utils.to_rgb(l_channel[0].cpu(), a_b_channel_hat[0].cpu(),
                          activation_function,
-                         save_path=save_path, save_name=save_name_recons)
+                         save_path=save_path, save_name=save_name_recons, device=device)
 
-            # Utils.show_img(torchvision.utils.make_grid(image_original))
-            # Utils.show_img(torchvision.utils.make_grid(l_channel))
-            # Utils.show_img(torchvision.utils.make_grid(image_reconst))
+        self.display_image_grid(epoch, lr, weight_decay, save_path)
 
-            # Utils.show_img_tensor(image_original[0])
-            # Utils.show_img_tensor(image_reconst[0])
+    @staticmethod
+    def display_image_grid(epoch, lr, weight_decay, save_path):
 
-            # break
+        color_path = save_path['colorized']
+        gray_path = save_path['grayscale']
+
+        for image_index in range(7, 70, 7):
+            title = "./Plots/Colorizer/epoch_{0}_lr_{1}_wt_{2}_serial_{3}.jpeg".\
+                format(epoch, lr, weight_decay, image_index)
+
+            save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
+                .format(epoch, lr, weight_decay, image_index)
+            save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
+                .format(epoch, lr, weight_decay, image_index)
+            Utils.show_output_image(gray_path + save_name_orig, color_path + save_name_orig,
+                                    color_path + save_name_recons, title)

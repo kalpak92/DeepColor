@@ -17,8 +17,8 @@ pwd; hostname; date
 
 module load python
 
-echo "Deep Color Regressor"
+echo "Deep Colorizer"
 
-python3 -u main.py > Regressor500.out
+python3 -u main.py > Colorizer_Kalpak_Shantanu.out
 
 date

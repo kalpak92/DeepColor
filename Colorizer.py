@@ -17,27 +17,27 @@ class Colorizer(nn.Module):
             nn.ConvTranspose2d(in_channels=in_channel, out_channels=hidden_channel,
                                kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=hidden_channel, out_channels=hidden_channel,
                                kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=hidden_channel, out_channels=hidden_channel,
                                kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=hidden_channel, out_channels=hidden_channel,
                                kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=hidden_channel, out_channels=hidden_channel,
                                kernel_size=2, stride=2),
             nn.BatchNorm2d(hidden_channel),
-            nn.ReLU(True),
+            nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=hidden_channel, out_channels=out_channel,
                                kernel_size=2, stride=2)

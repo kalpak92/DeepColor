@@ -1,4 +1,5 @@
 import os
+import re
 from shutil import copy2
 
 import matplotlib.image as mpimg
@@ -12,6 +13,21 @@ from Constants import Constants
 
 class Utils:
     @staticmethod
+    def get_hyperparameters():
+        parameters = dict(
+            lr=[.001],
+            weight_decay=[1e-5],
+            epoch=[100]
+        )
+        # parameters = dict(
+        #     lr=[.0001],
+        #     weight_decay=[1e-5],
+        #     epoch=[100]
+        # )
+        hyperparams_values = [v for v in parameters.values()]
+        return hyperparams_values
+
+    @staticmethod
     def show_img(image):
         plt.figure(figsize=(20, 20))
         # image = image / 2 + 0.5
@@ -24,7 +40,7 @@ class Utils:
     def train_test_split():
         os.makedirs('data/train/class/', exist_ok=True)
         os.makedirs('data/test/class/', exist_ok=True)
-        os.makedirs('data/val/class', exist_ok=True)
+        # os.makedirs('data/val/class', exist_ok=True)
 
         number_of_images = len(next(os.walk('face_images'))[2])
         print("Number of images - ", number_of_images)
@@ -33,14 +49,11 @@ class Utils:
             if i < (0.1 * number_of_images):  # first 10% will be val
                 copy2('face_images/' + file, 'data/test/class/' + file)
                 continue
-            elif i < (0.15 * number_of_images):
-                copy2('face_images/' + file, 'data/val/class/' + file)
-                continue
             else:  # others will be train
                 copy2('face_images/' + file, 'data/train/class/' + file)
 
         print("Training Set Size : ", len(next(os.walk('data/train/class'))[2]))
-        print("Validation Set Size : ", len(next(os.walk('data/val/class'))[2]))
+        # print("Validation Set Size : ", len(next(os.walk('data/val/class'))[2]))
         print("Test Set Size : ", len(next(os.walk('data/test/class'))[2]))
 
     # display(Image(filename='data/train/class/image00007.jpg'))
@@ -82,17 +95,19 @@ class Utils:
 
     @staticmethod
     def to_rgb(grayscale_input, ab_input, activation_function=Constants.TANH,
-               save_path=None, save_name=None):
+               save_path=None, save_name=None, device="cpu"):
         plt.clf()
         color_image = torch.cat((grayscale_input, ab_input), 0).numpy()  # combine channels
         color_image = color_image.transpose((1, 2, 0))  # rescale for matplotlib
-        if activation_function == Constants.TANH:
-            color_image = ((color_image * 0.5) + 0.5)
-
         # print(color_image)
+        # print(color_image.min())
+        # if activation_function==Constants.TANH and bool(re.match('recons', save_name, re.I)):
+        #     # mean = torch.mean(color_image)
+        #     # std = torch.std()
+        #     color_image = (color_image + 0.4) /0.4
 
         color_image[:, :, 0:1] = color_image[:, :, 0:1] * 100
-        color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255
+        color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255 - 128
         color_image = lab2rgb(color_image.astype(np.float64))
         grayscale_input = grayscale_input.squeeze().numpy()
         if save_path is not None and save_name is not None:
@@ -100,12 +115,29 @@ class Utils:
             plt.imsave(arr=color_image, fname='{}{}'.format(save_path['colorized'], save_name))
 
     @staticmethod
-    def show_output_image(path, title):
+    def show_output_image(gray, orig, recons, fig_name):
         plt.clf()
-        image = mpimg.imread(path)
-        plt.title(title)
-        plt.imshow(image)
-        plt.show()
+        f = plt.figure()
+        f.add_subplot(1, 3, 1)
+        plt.imshow(mpimg.imread(gray))
+        plt.axis('off')
+        f.add_subplot(1, 3, 2)
+        plt.imshow(mpimg.imread(orig))
+        plt.axis('off')
+        f.add_subplot(1, 3, 3)
+        plt.imshow(mpimg.imread(recons))
+        plt.axis('off')
+
+        # plt.show(block=True)
+
+        plt.draw()
+        plt.savefig(fig_name, dpi=220)
+        plt.clf()
+        plt.close()
+        # image = mpimg.imread(path)
+        # # plt.title(title)
+        # plt.imshow(image)
+        # plt.show()
 
 
 class EarlyStopping_DCN:
