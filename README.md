@@ -78,6 +78,16 @@ The code extracts the `device` at the start of execution using ` torch.cuda.is_a
 
 
 
+## Hyperparameters
+
+The following hyperparameters have been considered:
+
+- Learning Rate
+- Weight Decay
+- Number of Epochs
+
+These have been defined inside the `Utils` class under `get_hyperparameters()` .  The parameters are defined as a dictionary and the function returns a list having the list of parameters respectively. Following this, during runtime, using `itertools.product` to generate a cartesian product of the list of hyperparameters, the training has been done for each set of hyperparameters. 
+
 ## Summary
 
 
