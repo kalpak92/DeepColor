@@ -15,8 +15,8 @@ class Utils:
     @staticmethod
     def get_hyperparameters():
         parameters = dict(
-            lr=[.001, 0.0001],
-            weight_decay=[0, 1e-5],
+            lr=[.001],
+            weight_decay=[1e-5],
             epoch=[100]
         )
         # parameters = dict(
