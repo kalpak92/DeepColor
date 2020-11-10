@@ -11,12 +11,22 @@ class Regressor(nn.Module):
 
         self.feature_maps = nn.Sequential(
             # input is Z, going into a convolution
-            nn.Conv2d(in_channels=in_channel, out_channels=10,
+            nn.Conv2d(in_channels=in_channel, out_channels=6,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(10),
+            nn.BatchNorm2d(6),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=10, out_channels=25,
+            nn.Conv2d(in_channels=6, out_channels=12,
+                      kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(12),
+            nn.LeakyReLU(),
+
+            nn.Conv2d(in_channels=12, out_channels=25,
+                      kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(25),
+            nn.LeakyReLU(),
+
+            nn.Conv2d(in_channels=25, out_channels=25,
                       kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(25),
             nn.LeakyReLU(),
@@ -29,16 +39,6 @@ class Regressor(nn.Module):
             nn.Conv2d(in_channels=50, out_channels=75,
                       kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(75),
-            nn.LeakyReLU(),
-
-            nn.Conv2d(in_channels=75, out_channels=100,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(100),
-            nn.LeakyReLU(),
-
-            nn.Conv2d(in_channels=100, out_channels=125,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(125),
             nn.LeakyReLU(),
         )
 

@@ -15,19 +15,9 @@ class Colorizer(nn.Module):
         self.feature_maps = Regressor(in_channel=1, hidden_channel=3, out_dims=2,
                                       train_mode="colorizer")
         self.up_sample = nn.Sequential(
-            nn.ConvTranspose2d(in_channels=125, out_channels=100,
-                               kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(100),
-            nn.LeakyReLU(),
-
-            nn.ConvTranspose2d(in_channels=100, out_channels=75,
-                               kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(75),
-            nn.LeakyReLU(),
-
             nn.ConvTranspose2d(in_channels=75, out_channels=50,
                                kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(50),
+            nn.BatchNorm2d(75),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=50, out_channels=25,
@@ -35,12 +25,22 @@ class Colorizer(nn.Module):
             nn.BatchNorm2d(25),
             nn.LeakyReLU(),
 
-            nn.ConvTranspose2d(in_channels=25, out_channels=10,
+            nn.ConvTranspose2d(in_channels=25, out_channels=25,
                                kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(10),
+            nn.BatchNorm2d(25),
             nn.LeakyReLU(),
 
-            nn.ConvTranspose2d(in_channels=10, out_channels=out_channel,
+            nn.ConvTranspose2d(in_channels=25, out_channels=12,
+                               kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(12),
+            nn.LeakyReLU(),
+
+            nn.ConvTranspose2d(in_channels=12, out_channels=6,
+                               kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(6),
+            nn.LeakyReLU(),
+
+            nn.ConvTranspose2d(in_channels=6, out_channels=out_channel,
                                kernel_size=3, stride=1, padding=1)
         )
 
