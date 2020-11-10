@@ -14,16 +14,16 @@ from Constants import Constants
 class Utils:
     @staticmethod
     def get_hyperparameters():
-        # parameters = dict(
-        #     lr=[.001, 0.0001],
-        #     weight_decay=[0, 1e-5],
-        #     epoch=[100, 200, 400]
-        # )
         parameters = dict(
-            lr=[.0001],
-            weight_decay=[1e-5],
+            lr=[.001, 0.0001],
+            weight_decay=[0, 1e-5],
             epoch=[100]
         )
+        # parameters = dict(
+        #     lr=[.0001],
+        #     weight_decay=[1e-5],
+        #     epoch=[100]
+        # )
         hyperparams_values = [v for v in parameters.values()]
         return hyperparams_values
 
@@ -115,12 +115,29 @@ class Utils:
             plt.imsave(arr=color_image, fname='{}{}'.format(save_path['colorized'], save_name))
 
     @staticmethod
-    def show_output_image(path, title):
+    def show_output_image(gray, orig, recons, fig_name):
         plt.clf()
-        image = mpimg.imread(path)
-        plt.title(title)
-        plt.imshow(image)
-        plt.show()
+        f = plt.figure()
+        f.add_subplot(1, 3, 1)
+        plt.imshow(mpimg.imread(gray))
+        plt.axis('off')
+        f.add_subplot(1, 3, 2)
+        plt.imshow(mpimg.imread(orig))
+        plt.axis('off')
+        f.add_subplot(1, 3, 3)
+        plt.imshow(mpimg.imread(recons))
+        plt.axis('off')
+
+        # plt.show(block=True)
+
+        plt.draw()
+        plt.savefig(fig_name, dpi=220)
+        plt.clf()
+        plt.close()
+        # image = mpimg.imread(path)
+        # # plt.title(title)
+        # plt.imshow(image)
+        # plt.show()
 
 
 class EarlyStopping_DCN:

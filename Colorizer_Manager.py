@@ -134,9 +134,9 @@ class Colorizer_Manager:
 
             print("Image: {0}, loss: {1}".format(serial_num, loss.item()))
 
-            save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
+            save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
                 .format(epoch, lr, weight_decay, serial_num)
-            save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg'\
+            save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
                 .format(epoch, lr, weight_decay, serial_num)
 
             Utils.to_rgb(l_channel[0].cpu(), a_b_channel[0].cpu(),
@@ -145,3 +145,22 @@ class Colorizer_Manager:
             Utils.to_rgb(l_channel[0].cpu(), a_b_channel_hat[0].cpu(),
                          activation_function,
                          save_path=save_path, save_name=save_name_recons, device=device)
+
+        self.display_image_grid(epoch, lr, weight_decay, save_path)
+
+    @staticmethod
+    def display_image_grid(epoch, lr, weight_decay, save_path):
+
+        color_path = save_path['colorized']
+        gray_path = save_path['grayscale']
+
+        for image_index in range(7, 70, 7):
+            title = "./Plots/Colorizer/epoch_{0}_lr_{1}_wt_{2}_serial_{3}.jpeg".\
+                format(epoch, lr, weight_decay, image_index)
+
+            save_name_orig = 'Orig_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
+                .format(epoch, lr, weight_decay, image_index)
+            save_name_recons = 'Recons_img_epoch_{0}_lr_{1}_wt_decay{2}_serial_{3}.jpg' \
+                .format(epoch, lr, weight_decay, image_index)
+            Utils.show_output_image(gray_path + save_name_orig, color_path + save_name_orig,
+                                    color_path + save_name_recons, title)
