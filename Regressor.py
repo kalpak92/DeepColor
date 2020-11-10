@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+
 class Regressor(nn.Module):
     def __init__(self, in_channel=1, hidden_channel=3, out_dims=2,
                  train_mode="regressor"):
