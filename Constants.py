@@ -1,5 +1,5 @@
 class Constants:
-    REGRESSOR_EPOCH = 200
+    REGRESSOR_EPOCH = 75
     REGRESSOR_SAVED_MODEL_PATH = "./Model/Regressor/Regressor.pth"
     REGRESSOR_LOSS_PLOT_PATH = "Plots/Regressor/Regressor_Loss_plot.jpeg"
     REGRESSOR_LR = 0.0001
@@ -8,7 +8,7 @@ class Constants:
     REGRESSOR_HIDDEN_CHANNEL = 3
     REGRESSOR_OUT_DIMS = 2
     REGRESSOR_BATCH_SIZE_CPU = 32
-    REGRESSOR_BATCH_SIZE_CUDA = 256
+    REGRESSOR_BATCH_SIZE_CUDA = 16
 
     COLORIZER_EPOCH = 100
     COLORIZER_SAVED_MODEL_PATH_TANH = "./Model/Colorizer/Colorizer_tanh_epoch_{0}_lr_{1}_weight_decay_{2}.pth"
