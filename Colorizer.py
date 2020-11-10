@@ -16,32 +16,32 @@ class Colorizer(nn.Module):
                                       train_mode="colorizer")
         self.up_sample = nn.Sequential(
             nn.ConvTranspose2d(in_channels=50, out_channels=32,
-                               kernel_size=3, stride=1, padding=1),
+                               kernel_size=3, stride=2, padding=1),
             nn.BatchNorm2d(32),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=32, out_channels=16,
-                               kernel_size=3, stride=1, padding=1),
+                               kernel_size=3, stride=2, padding=1),
             nn.BatchNorm2d(16),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=16, out_channels=8,
-                               kernel_size=3, stride=1, padding=1),
+                               kernel_size=4, stride=2, padding=1),
             nn.BatchNorm2d(8),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=8, out_channels=8,
-                               kernel_size=3, stride=1, padding=1),
+                               kernel_size=4, stride=2, padding=1),
             nn.BatchNorm2d(8),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=8, out_channels=4,
-                               kernel_size=3, stride=1, padding=1),
+                               kernel_size=4, stride=2, padding=1),
             nn.BatchNorm2d(4),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=4, out_channels=out_channel,
-                               kernel_size=3, stride=1, padding=1)
+                               kernel_size=4, stride=2, padding=1)
         )
 
     def forward(self, x):
