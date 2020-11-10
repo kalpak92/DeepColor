@@ -86,7 +86,7 @@ class Regressor_Manager:
             a_b_mean = Utils.get_ab_mean(a_channel, b_channel)
             a_b_mean_hat = model(l_channel).detach()
 
-            a_b_pred = a_b_mean_hat[0].numpy()
+            a_b_pred = a_b_mean_hat[0].cpu().numpy()
             a_list.append(a_b_pred[0])
             b_list.append(a_b_pred[1])
 
