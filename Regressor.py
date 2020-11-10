@@ -11,44 +11,44 @@ class Regressor(nn.Module):
 
         self.feature_maps = nn.Sequential(
             # input is Z, going into a convolution
-            nn.Conv2d(in_channels=in_channel, out_channels=3,
+            nn.Conv2d(in_channels=in_channel, out_channels=10,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(3),
+            nn.BatchNorm2d(10),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=3, out_channels=6,
+            nn.Conv2d(in_channels=10, out_channels=25,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(6),
+            nn.BatchNorm2d(25),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=6, out_channels=12,
+            nn.Conv2d(in_channels=25, out_channels=50,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(12),
+            nn.BatchNorm2d(50),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=12, out_channels=12,
+            nn.Conv2d(in_channels=50, out_channels=75,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(12),
+            nn.BatchNorm2d(75),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=12, out_channels=24,
+            nn.Conv2d(in_channels=75, out_channels=100,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(24),
+            nn.BatchNorm2d(100),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=24, out_channels=24,
+            nn.Conv2d(in_channels=100, out_channels=125,
                       kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(24),
+            nn.BatchNorm2d(125),
             nn.LeakyReLU(),
         )
 
         if self.train_mode == "regressor":
-            self.lin = nn.Linear(in_features=24 * 2 * 2, out_features=out_dims)
+            self.lin = nn.Linear(in_features=125 * 2 * 2, out_features=out_dims)
 
     def forward(self, x):
         feature_maps = self.feature_maps(x)
         if self.train_mode == "regressor":
-            y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 512 * 2 * 2)))
+            y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 125 * 2 * 2)))
             return y_hat
 
         else:
