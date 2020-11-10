@@ -113,6 +113,6 @@ if __name__ == '__main__':
     print("Normal Credit - Sigmoid")
     execute_colorizer_sigmoid()
 
-    # print("Extra Credit - Tanh")
-    # execute_colorizer_tanh()
+    print("Extra Credit - Tanh")
+    execute_colorizer_tanh()
 
