@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class Regressor(nn.Module):
@@ -7,45 +8,41 @@ class Regressor(nn.Module):
                  train_mode="regressor"):
         super(Regressor, self).__init__()
         self.train_mode = train_mode
+        self.conv1 = nn.Conv2d(in_channels=in_channel, out_channels=32,
+                               kernel_size=3, stride=1, padding=1)
+        self.bn1 = nn.BatchNorm2d(num_features=32)
 
-        self.feature_maps = nn.Sequential(
-            # input is Z, going into a convolution
-            nn.Conv2d(in_channels=in_channel, out_channels=32,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(32),
-            nn.LeakyReLU(),
+        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64,
+                               kernel_size=3, stride=1, padding=1)
+        self.bn2 = nn.BatchNorm2d(num_features=64)
 
-            nn.Conv2d(in_channels=32, out_channels=64,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(64),
-            nn.LeakyReLU(),
+        self.conv3 = nn.Conv2d(in_channels=64, out_channels=128,
+                               kernel_size=3, stride=1, padding=1)
+        self.bn3 = nn.BatchNorm2d(num_features=128)
 
-            nn.Conv2d(in_channels=64, out_channels=128,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(128),
-            nn.LeakyReLU(),
+        self.conv4 = nn.Conv2d(in_channels=128, out_channels=256,
+                               kernel_size=3, stride=1, padding=1)
+        self.bn4 = nn.BatchNorm2d(num_features=256)
 
-            nn.Conv2d(in_channels=128, out_channels=256,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(256),
-            nn.LeakyReLU(),
+        self.conv5 = nn.Conv2d(in_channels=256, out_channels=256,
+                               kernel_size=3, stride=1, padding=1)
+        self.bn5 = nn.BatchNorm2d(num_features=256)
 
-            nn.Conv2d(in_channels=256, out_channels=256,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(256),
-            nn.LeakyReLU(),
-
-            nn.Conv2d(in_channels=256, out_channels=512,
-                      kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(512),
-            nn.LeakyReLU(),
-        )
+        self.conv6 = nn.Conv2d(in_channels=256, out_channels=512,
+                               kernel_size=3, stride=1, padding=1)
+        self.bn6 = nn.BatchNorm2d(num_features=512)
 
         if self.train_mode == "regressor":
             self.lin = nn.Linear(in_features=512 * 2 * 2, out_features=out_dims)
 
-    def forward(self, input):
-        feature_maps = self.feature_maps(input)
+    def forward(self, x):
+        x = F.leaky_relu(self.bn1(self.conv1(x)))
+        x = F.leaky_relu(self.bn2(self.conv2(x)))
+        x = F.leaky_relu(self.bn3(self.conv3(x)))
+        x = F.leaky_relu(self.bn4(self.conv4(x)))
+        x = F.leaky_relu(self.bn5(self.conv5(x)))
+
+        feature_maps = F.leaky_relu(self.bn6(self.conv6(x)))
 
         if self.train_mode == "regressor":
             y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 512 * 2 * 2)))
