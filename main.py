@@ -115,4 +115,3 @@ if __name__ == '__main__':
 
     print("Extra Credit - Tanh")
     execute_colorizer_tanh()
-

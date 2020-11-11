@@ -1,0 +1,32 @@
+/home/shantanughosh/DeepColor/Regressor/DeepColor
+c37a-s24.ufhpc
+Tue Nov 10 10:18:50 EST 2020
+Deep Colorizer
+Traceback (most recent call last):
+  File "main.py", line 114, in <module>
+    execute_colorizer_sigmoid()
+  File "main.py", line 101, in execute_colorizer_sigmoid
+    activation_function, model_name, device)
+  File "/home/shantanughosh/DeepColor/Regressor/DeepColor/Colorize_deep.py", line 57, in train_colorizer
+    activation_function, device)
+  File "/home/shantanughosh/DeepColor/Regressor/DeepColor/Colorizer_Manager.py", line 46, in train
+    a_b_channel_hat = model(l_channel)
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/shantanughosh/DeepColor/Regressor/DeepColor/Colorizer.py", line 48, in forward
+    return torch.sigmoid(self.up_sample(self.feature_maps(x)))
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/shantanughosh/DeepColor/Regressor/DeepColor/Regressor.py", line 48, in forward
+    feature_maps = self.feature_maps(input)
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/container.py", line 100, in forward
+    input = module(input)
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/module.py", line 532, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/conv.py", line 345, in forward
+    return self.conv2d_forward(input, self.weight)
+  File "/apps/python/3.7/lib/python3.7/site-packages/torch/nn/modules/conv.py", line 342, in conv2d_forward
+    self.padding, self.dilation, self.groups)
+RuntimeError: CUDA out of memory. Tried to allocate 4.00 GiB (GPU 0; 11.17 GiB total capacity; 10.53 GiB already allocated; 326.31 MiB free; 10.54 GiB reserved in total by PyTorch)

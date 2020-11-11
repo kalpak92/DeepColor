@@ -11,7 +11,7 @@
 #SBATCH --account=cis6930
 #SBATCH --qos=cis6930
 #SBATCH --partition=gpu
-#SBATCH --gpus=1
+#SBATCH --gpus=tesla:1
 
 pwd; hostname; date
 
