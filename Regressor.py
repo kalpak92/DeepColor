@@ -31,24 +31,24 @@ class Regressor(nn.Module):
             nn.BatchNorm2d(256),
             nn.LeakyReLU(),
 
-            nn.Conv2d(in_channels=256, out_channels=256,
-                      kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(256),
-            nn.LeakyReLU(),
-
             nn.Conv2d(in_channels=256, out_channels=512,
                       kernel_size=4, stride=2, padding=1),
             nn.BatchNorm2d(512),
             nn.LeakyReLU(),
+
+            nn.Conv2d(in_channels=512, out_channels=1024,
+                      kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(1024),
+            nn.LeakyReLU(),
         )
 
         if self.train_mode == "regressor":
-            self.lin = nn.Linear(in_features=512 * 2 * 2, out_features=out_dims)
+            self.lin = nn.Linear(in_features=1024 * 2 * 2, out_features=out_dims)
 
     def forward(self, x):
         feature_maps = self.feature_maps(x)
         if self.train_mode == "regressor":
-            y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 512 * 2 * 2)))
+            y_hat = torch.sigmoid(self.lin(feature_maps.reshape(-1, 1024 * 2 * 2)))
             return y_hat
 
         else:
