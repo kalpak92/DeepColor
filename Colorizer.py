@@ -17,7 +17,7 @@ class Colorizer(nn.Module):
         self.up_sample = nn.Sequential(
             nn.ConvTranspose2d(in_channels=512, out_channels=256,
                                kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(512),
+            nn.BatchNorm2d(256),
             nn.LeakyReLU(),
 
             nn.ConvTranspose2d(in_channels=256, out_channels=256,
