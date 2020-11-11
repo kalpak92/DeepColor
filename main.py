@@ -30,8 +30,7 @@ def build_dataset(cuda=False, num_workers=1,
     transform = transforms.Compose([
         transforms.Resize(128),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomResizedCrop(128),
-        transforms.RandomAffine(degrees=45, translate=None, scale=(0.6, 1.0), shear=None, resample=0, fillcolor=0)
+        transforms.RandomResizedCrop(128)
     ])
 
     train_datasets = []
