@@ -30,7 +30,9 @@ def build_dataset(cuda=False, num_workers=1,
     transform = transforms.Compose([
         transforms.Resize(128),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomResizedCrop(128)
+        transforms.RandomResizedCrop(128),
+        transforms.RandomAffine(degrees=45, translate=None, scale=(0.6, 1.0), shear=None, resample=0, fillcolor=0),
+        transforms.ToTensor()
     ])
 
     train_datasets = []
@@ -81,8 +83,8 @@ def execute_colorizer_tanh():
     colorizer_deep.test_colorizer(augmented_dataset_batch_test, activation_function,
                                   save_path, model_name, device)
 
-    # colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
-    # colorizer_deep.test_regressor(augmented_dataset_batch_test, device)
+    colorizer_deep.train_regressor(augmented_dataset_batch_train, device)
+    colorizer_deep.test_regressor(augmented_dataset_batch_test, device)
 
 
 def execute_colorizer_sigmoid():
@@ -111,7 +113,7 @@ if __name__ == '__main__':
     load_data()
 
     print("Normal Credit - Sigmoid")
-    # execute_colorizer_sigmoid()
+    execute_colorizer_sigmoid()
 
     print("Extra Credit - Tanh")
     execute_colorizer_tanh()
